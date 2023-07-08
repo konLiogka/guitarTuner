@@ -145,8 +145,8 @@ public class PitchDetector {
 
 
 
-        // Absolute threshold and octave-based threshold
-        double threshold = 0.15;
+        // Absolute threshold 
+        double threshold = 0.13;
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < threshold) {
