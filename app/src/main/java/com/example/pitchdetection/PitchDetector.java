@@ -8,22 +8,21 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
 import androidx.core.app.ActivityCompat;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
+
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
     private static final int BUFFER_SIZE = 1024 * 4;
-
+    public short[] buffer = new short[BUFFER_SIZE];
     private AudioRecord audioRecord;
     private boolean isRecording = false;
 
     private PitchDetectionListener listener;
     private Handler handler;
+
 
     public interface PitchDetectionListener {
         void onPitchDetected(double pitchFrequency);
@@ -34,6 +33,7 @@ public class PitchDetector {
     }
 
     public void start(Context context) {
+
 
         if (isRecording) return;
 
@@ -48,6 +48,7 @@ public class PitchDetector {
         isRecording = true;
 
         handler = new Handler(Looper.getMainLooper());
+
         handler.post(updatePitch);
     }
 
@@ -65,9 +66,11 @@ public class PitchDetector {
     }
 
     private final Runnable updatePitch = new Runnable() {
+
         @Override
         public void run() {
-            short[] buffer = new short[BUFFER_SIZE];
+
+
             int bytesRead = audioRecord.read(buffer, 0, BUFFER_SIZE);
 
             if (bytesRead > 0) {
@@ -84,15 +87,12 @@ public class PitchDetector {
     };
 
 
+
     private double computePitchFrequency(short[] audioBuffer) {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         double[] buffer = new double[audioBuffer.length];
         for (int i = 0; i < audioBuffer.length; i++) {
-            buffer[i] = audioBuffer[i] / 32768.0; // Convert from short to double in the range [-1, 1]
+            buffer[i] = audioBuffer[i] / 32768.0;
         }
 
         int bufferSize = buffer.length;
@@ -121,10 +121,14 @@ public class PitchDetector {
 
         }
 
-        double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean);
+
+
+
+        double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean );
 
 
         double pitchFrequency = SAMPLE_RATE / interpolatedPeak;
+
 
 
         if (listener != null) {
@@ -136,9 +140,13 @@ public class PitchDetector {
 
     }
 
-    public double calculateInterpolatedPeak(double[] cumulativeMeanNormalizedDifference, int bufferSize, double[] dMean) {
+    public double calculateInterpolatedPeak(double[] cumulativeMeanNormalizedDifference, int bufferSize, double[] dMean ) {
+
+
+
+
         // Absolute threshold and octave-based threshold
-        double threshold = 0.25;
+        double threshold = 0.15;
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < threshold) {
@@ -147,25 +155,16 @@ public class PitchDetector {
             }
         }
 
-        // Octave-based thresholding
-        int subOctaves = 5;
-        int subOctaveSize = bufferSize / subOctaves;
-        int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
-        int subOctaveEnd = subOctaveStart + subOctaveSize;
-        for (int lag = subOctaveStart + 1; lag < subOctaveEnd; lag++) {
-            if (cumulativeMeanNormalizedDifference[lag] < cumulativeMeanNormalizedDifference[pitchPeriod]) {
-                pitchPeriod = lag;
-            }
-        }
+
 
         // Multiple parabolic interpolations
-        int numInterpolations = 16;
+        int numInterpolations = 3;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;
             if (pitchPeriod > 1 && pitchPeriod < bufferSize - 1) {
                 double delta = dMean[pitchPeriod + 1] - dMean[pitchPeriod - 1];
-                double thresholdDelta = 0.060* cumulativeMeanNormalizedDifference[pitchPeriod]; // Adjust the threshold as needed
+                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod]; // Adjust the threshold as needed
                 if (delta != 0 && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod - 1]) <= thresholdDelta && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod + 1]) <= thresholdDelta) {
                     interpolatedPeak += (dMean[pitchPeriod - 1] - dMean[pitchPeriod + 1]) / (2 * delta);
                 }
@@ -173,11 +172,14 @@ public class PitchDetector {
             pitchPeriod = (int) interpolatedPeak;
 
         }
-       return interpolatedPeak;
+        return interpolatedPeak;
+    }
+
     }
 
 
-}
+
+
 
 
 

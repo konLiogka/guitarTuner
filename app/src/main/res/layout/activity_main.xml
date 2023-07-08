@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1D5B79"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/freq"
-        android:layout_width="102dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="261dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/vt323"
         android:gravity="center"
-        android:text="frequency"
-        android:textSize="17dp"
+        android:text="82.41Hz"
+        android:textColor="#A2FF86"
+        android:textSize="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,15 +24,47 @@
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="350dp"
-        android:layout_height="238dp"
+        android:layout_width="410dp"
+        android:layout_height="246dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/esp_bold"
         android:gravity="center"
         android:text="E"
-        android:textSize="190dp"
+        android:textColor="#A2FF86"
+        android:textSize="130dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="13dp"
+        app:cardElevation="7dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note"
+        app:layout_constraintVertical_bias="0.956"
+        android:background="@drawable/spinner_bg">>
+
+        <Spinner
+            android:id="@+id/tuningSpinner"
+            android:layout_width="240dp"
+            android:layout_height="38dp"
+            android:background="#1D5B79"
+            android:entries="@array/tunings"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note"
+            app:layout_constraintVertical_bias="0.891"
+
+             />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,9 +12,7 @@ import android.os.Bundle;
 
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
-import java.util.Arrays;
+
 
 public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener {
     public TextView pitchTextView;
@@ -24,15 +22,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
     public  String[][] notesList = {
-           {"C1", "32.70"},
-           {"C#1", "34.65"},
-           {"D1", "36.71"},
-           {"D#1", "38.89"},
-           {"E1", "41.20"},
-           {"F1", "43.65"},
-           {"F#1", "46.25"},
-           {"G1", "49.00"},
-           {"G#1", "51.91"},
+
            {"A1", "55.00"},
            {"A#1", "58.27"},
            {"B1", "61.74"},
@@ -113,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
@@ -146,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
             public void run() {
 
-                if(pitchFrequency>50 && pitchFrequency<2000) {
+                if(pitchFrequency>50 &&  pitchFrequency<1500 ) {
 
 
 
