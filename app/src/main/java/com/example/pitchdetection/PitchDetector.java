@@ -90,7 +90,7 @@ public class PitchDetector {
 
     private double computePitchFrequency(short[] audioBuffer) {
 
-        // Apply a windowing function (Hamming window) to the audio signal
+        // Hamming Windowing for reducing distortion
         double[] windowedBuffer = new double[audioBuffer.length];
         double alpha = 0.53;
         double beta = 1 - alpha;
@@ -99,7 +99,7 @@ public class PitchDetector {
             windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
         }
 
-        // Rest of your existing code
+ 
         int bufferSize = windowedBuffer.length;
         double[] difference = new double[bufferSize];
         double[] cumulativeMeanNormalizedDifference = new double[bufferSize];
@@ -122,7 +122,7 @@ public class PitchDetector {
             }
             cumulativeMeanNormalizedDifference[lag] = difference[lag] / (cmndf / lag);
         }
-
+        //Calculating the interpolated peak using parabolicInterpolation along with absolute and octave based threshold
         double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean);
         double pitchFrequency = SAMPLE_RATE / interpolatedPeak;
 
