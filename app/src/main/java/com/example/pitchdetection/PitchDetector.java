@@ -90,46 +90,41 @@ public class PitchDetector {
 
     private double computePitchFrequency(short[] audioBuffer) {
 
-        double[] buffer = new double[audioBuffer.length];
+        // Apply a windowing function (Hamming window) to the audio signal
+        double[] windowedBuffer = new double[audioBuffer.length];
+        double alpha = 0.53;
+        double beta = 1 - alpha;
         for (int i = 0; i < audioBuffer.length; i++) {
-            buffer[i] = audioBuffer[i] / 32768.0;
+            double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
+            windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
         }
 
-        int bufferSize = buffer.length;
+        // Rest of your existing code
+        int bufferSize = windowedBuffer.length;
         double[] difference = new double[bufferSize];
         double[] cumulativeMeanNormalizedDifference = new double[bufferSize];
         double[] dMean = new double[bufferSize];
 
-
-        // Autocorrelation function
+      // Autocorrelation function
         for (int lag = 0; lag < bufferSize; lag++) {
             for (int index = 0; index < bufferSize - lag; index++) {
-                double diff = buffer[index] - buffer[index + lag];
+                double diff = windowedBuffer[index] - windowedBuffer[index + lag];
                 difference[lag] += diff * diff;
             }
         }
 
-        // Cumulative mean normalized difference function
+       // Cumulative mean normalized difference function
         cumulativeMeanNormalizedDifference[0] = 1;
         for (int lag = 1; lag < bufferSize; lag++) {
             double cmndf = 0;
-
             for (int index = 1; index <= lag; index++) {
                 cmndf += difference[index];
             }
             cumulativeMeanNormalizedDifference[lag] = difference[lag] / (cmndf / lag);
-
         }
 
-
-
-
-        double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean );
-
-
+        double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean);
         double pitchFrequency = SAMPLE_RATE / interpolatedPeak;
-
-
 
         if (listener != null) {
             listener.onPitchDetected(pitchFrequency);
@@ -137,16 +132,13 @@ public class PitchDetector {
 
         return pitchFrequency;
 
-
     }
 
     public double calculateInterpolatedPeak(double[] cumulativeMeanNormalizedDifference, int bufferSize, double[] dMean ) {
 
 
-
-
-        // Absolute threshold and octave-based threshold
-        double threshold = 0.15;
+        // Absolute threshold
+        double threshold = 0.32  ;
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < threshold) {
@@ -155,10 +147,20 @@ public class PitchDetector {
             }
         }
 
+        // Octave-based thresholding
+        int subOctaves =  9;
+        int subOctaveSize = bufferSize / subOctaves;
+        int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
+        int subOctaveEnd = subOctaveStart + subOctaveSize;
+        for (int lag = subOctaveStart + 1; lag < subOctaveEnd; lag++) {
+            if (cumulativeMeanNormalizedDifference[lag] < cumulativeMeanNormalizedDifference[pitchPeriod]) {
+                pitchPeriod = lag;
+            }
+        }
 
 
         // Multiple parabolic interpolations
-        int numInterpolations = 3;
+        int numInterpolations = 12;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;

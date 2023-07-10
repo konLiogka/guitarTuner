@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
             public void run() {
 
-                if(pitchFrequency>50 &&  pitchFrequency<1500 ) {
+                if(pitchFrequency>20 &&  pitchFrequency<2000 ) {
 
 
 
