@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.core.app.ActivityCompat;
 
-import java.util.Arrays;
+ 
 
 
 public class PitchDetector {
