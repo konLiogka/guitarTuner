@@ -139,7 +139,7 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.32  ;
+        double threshold = 0.36 ; //I had to make the threshold way higher than the recommended value (0.1) because it wouldn't detect the lower notes. If anyone can help with this ty.
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < threshold) {
@@ -149,7 +149,7 @@ public class PitchDetector {
         }
 
         // Octave-based thresholding
-        int subOctaves =  9;
+        int subOctaves =  17;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
@@ -161,7 +161,7 @@ public class PitchDetector {
 
 
         // Multiple parabolic interpolations
-        int numInterpolations = 12;
+        int numInterpolations = 10;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;

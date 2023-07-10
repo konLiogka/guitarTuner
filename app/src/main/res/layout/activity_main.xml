@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1D5B79"
+    android:background="#262626"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/vt323"
         android:gravity="center"
-        android:text="82.41Hz"
+
         android:textColor="#A2FF86"
         android:textSize="36dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,37 +25,37 @@
     <TextView
         android:id="@+id/note"
         android:layout_width="410dp"
-        android:layout_height="246dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="205dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="@font/esp_bold"
         android:gravity="center"
-        android:text="E"
+
         android:textColor="#A2FF86"
         android:textSize="130dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="177dp"
+        android:layout_height="41dp"
         android:layout_margin="8dp"
+        android:background="@drawable/spinner_bg"
         app:cardCornerRadius="13dp"
-        app:cardElevation="7dp"
 
+        app:cardElevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note"
-        app:layout_constraintVertical_bias="0.956"
-        android:background="@drawable/spinner_bg">>
+        app:layout_constraintVertical_bias="0.956">>
 
         <Spinner
             android:id="@+id/tuningSpinner"
-            android:layout_width="240dp"
-            android:layout_height="38dp"
-            android:background="#1D5B79"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#262626"
             android:entries="@array/tunings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,83 @@
             app:layout_constraintTop_toBottomOf="@+id/note"
             app:layout_constraintVertical_bias="0.891"
 
-             />
+            />
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="282dp"
+        android:layout_height="439dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/guitar" />
+
+    <Button
+        android:id="@+id/s4"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="52dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note" />
+
+    <Button
+        android:id="@+id/s6"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/s5"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <Button
+        android:id="@+id/s5"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/s4" />
+
+    <Button
+        android:id="@+id/s3"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/note" />
+
+    <Button
+        android:id="@+id/s2"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/s3" />
+
+    <Button
+        android:id="@+id/s1"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/s2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
