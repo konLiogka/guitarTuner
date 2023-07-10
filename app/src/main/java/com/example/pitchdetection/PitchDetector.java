@@ -11,7 +11,8 @@ import android.os.Looper;
 import androidx.core.app.ActivityCompat;
 
  
-
+//Still WIP for some reason its having trouble detecting lower notes when plucking with a pick. Applying Hamming windowing helped a lot with octave jumping but its still present in some cases
+//My best option is to introduce manual tuning and tuning based on predefined frequencies, for example Standard E tuning.
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
@@ -166,7 +167,7 @@ public class PitchDetector {
             interpolatedPeak = pitchPeriod;
             if (pitchPeriod > 1 && pitchPeriod < bufferSize - 1) {
                 double delta = dMean[pitchPeriod + 1] - dMean[pitchPeriod - 1];
-                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod]; // Adjust the threshold as needed
+                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod]; 
                 if (delta != 0 && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod - 1]) <= thresholdDelta && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod + 1]) <= thresholdDelta) {
                     interpolatedPeak += (dMean[pitchPeriod - 1] - dMean[pitchPeriod + 1]) / (2 * delta);
                 }
