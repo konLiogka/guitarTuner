@@ -139,7 +139,7 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.36 ; //I had to make the threshold way higher than the recommended value (0.1) because it wouldn't detect the lower notes. If anyone can help with this ty.
+        double threshold = 0.4 ; //I had to make the threshold way higher than the recommended value (0.1) because it wouldn't detect the lower notes. If anyone can help with this ty.
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < threshold) {
