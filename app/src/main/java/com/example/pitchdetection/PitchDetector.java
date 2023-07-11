@@ -149,7 +149,7 @@ public class PitchDetector {
         }
 
         // Octave-based thresholding
-        int subOctaves =  17;
+        int subOctaves =   7;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
@@ -161,7 +161,7 @@ public class PitchDetector {
 
 
         // Multiple parabolic interpolations
-        int numInterpolations = 10;
+        int numInterpolations = 20;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;

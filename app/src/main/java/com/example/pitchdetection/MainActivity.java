@@ -2,7 +2,10 @@ package com.example.pitchdetection;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import android.Manifest;
@@ -10,8 +13,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 
+import android.view.View;
 import android.widget.TextView;
-
 
 
 public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener {
@@ -118,6 +121,24 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         noteTextView = findViewById(R.id.note);
         pitchDetector = new PitchDetector();
         pitchDetector.setPitchDetectionListener(this);
+
+
+        CardView cardView = findViewById(R.id.tuningCardView);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                pitchDetector.stop();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                TuningFragment fragment = new TuningFragment();
+                fragmentTransaction.replace(R.id.fragmenttuning, fragment);
+                fragmentTransaction.commit();
+
+
+
+            }
+        });
     }
 
     @Override
@@ -138,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
             public void run() {
 
-                if(pitchFrequency>20 &&  pitchFrequency<2000 ) {
+                if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
 
 
 

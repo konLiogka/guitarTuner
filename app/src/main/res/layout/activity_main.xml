@@ -37,35 +37,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="177dp"
-        android:layout_height="41dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/spinner_bg"
-        app:cardCornerRadius="13dp"
+    <FrameLayout
+        android:id="@+id/fragmenttuning"
+        android:layout_width="315dp"
+        android:layout_height="278dp"
+        android:layout_gravity="center"
+        android:elevation="11dp"
 
+        app:layout_constraintBottom_toTopOf="@+id/tuningCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note">
+
+    </FrameLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="318dp"
+        android:layout_height="51dp"
+        android:layout_margin="8dp"
+        android:id="@+id/tuningCardView"
+        app:cardCornerRadius="13dp"
+        android:backgroundTint="#262626"
         app:cardElevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note"
-        app:layout_constraintVertical_bias="0.956">>
+        app:layout_constraintVertical_bias="0.956">
 
-        <Spinner
-            android:id="@+id/tuningSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#262626"
-            android:entries="@array/tunings"
+        <TextView
+            android:id="@+id/tuningText"
+            android:layout_width="306dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/vt323"
+            android:gravity="center"
+            android:text="Manual Tuning"
+            android:textColor="#A2FF86"
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/note"
-            app:layout_constraintVertical_bias="0.891"
-
-            />
+            app:layout_constraintVertical_bias="0.956" />
     </androidx.cardview.widget.CardView>
+
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -77,15 +93,48 @@
         app:srcCompat="@drawable/guitar" />
 
     <Button
+        android:id="@+id/s3"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/note" />
+
+    <Button
+        android:id="@+id/s2"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/s3" />
+
+    <Button
         android:id="@+id/s4"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="100dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note" />
+
+    <Button
+        android:id="@+id/s5"
+        android:layout_width="58dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#A2FF86"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/s4" />
 
     <Button
         android:id="@+id/s6"
@@ -97,46 +146,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/s5"
-        app:layout_constraintVertical_bias="0.105" />
-
-    <Button
-        android:id="@+id/s5"
-        android:layout_width="58dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#A2FF86"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/s4" />
-
-    <Button
-        android:id="@+id/s3"
-        android:layout_width="58dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#A2FF86"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/note" />
-
-    <Button
-        android:id="@+id/s2"
-        android:layout_width="58dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#A2FF86"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/s3" />
+        app:layout_constraintVertical_bias="0.104" />
 
     <Button
         android:id="@+id/s1"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
