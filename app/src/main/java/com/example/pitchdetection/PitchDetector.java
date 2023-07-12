@@ -93,7 +93,7 @@ public class PitchDetector {
 
         // Hamming Windowing for reducing distortion
         double[] windowedBuffer = new double[audioBuffer.length];
-        double alpha = 0.5;
+        double alpha = 0.6;
         double beta = 1 - alpha;
         for (int i = 0; i < audioBuffer.length; i++) {
             double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
@@ -139,7 +139,23 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.43 ;
+        double threshold = 0.13;
+
+
+        double energySum = 0.0;
+        for (int i = 0; i < bufferSize; i++) {
+            energySum += buffer[i] * buffer[i];
+        }
+        double averageEnergy = energySum / bufferSize;
+
+        double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
+
+        if (normalizedEnergy < 0.5) {
+            threshold += 0.3;
+        } else {
+            threshold -= 0.1;
+        }
+
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
             if(cumulativeMeanNormalizedDifference[lag]< threshold){
@@ -153,7 +169,7 @@ public class PitchDetector {
         }
 
         // Octave-based thresholding
-        int subOctaves =  10;
+        int subOctaves =  8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
@@ -165,7 +181,7 @@ public class PitchDetector {
 
 
         // Multiple parabolic interpolations
-        int numInterpolations =  20;
+        int numInterpolations =  10;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;

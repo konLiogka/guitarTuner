@@ -89,19 +89,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
            {"G#6", "1661.22"},
            {"A6", "1760.00"},
            {"A#6", "1864.66"},
-           {"B6", "1975.53"},
-           {"C7", "2093.00"},
-           {"C#7", "2217.46"},
-           {"D7", "2349.32"},
-           {"D#7", "2489.02"},
-           {"E7", "2637.02"},
-           {"F7", "2793.83"},
-           {"F#7", "2959.96"},
-           {"G7", "3135.96"},
-           {"G#7", "3322.44"},
-           {"A7", "3520.00"},
-           {"A#7", "3729.31"},
-           {"B7", "3951.1"}
+           {"B6", "1975.53"}
+
    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,18 +165,19 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
 
-                        pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
-                        for (int i = 0; i < notesList.length; i++) {
-                            double targetFrequency = Double.parseDouble(notesList[i][1]);
-                            double difference = Math.abs(pitchFrequency - targetFrequency);
-                            if (difference <= 3.0) {
+                    pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
+                    for (int i = 0; i < notesList.length; i++) {
+                        double targetFrequency = Double.parseDouble(notesList[i][1]);
+                        double difference = Math.abs(pitchFrequency - targetFrequency);
+                        double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
-                                noteTextView.setText(notesList[i][0]);
-                                return;
-                            }else{
-                                noteTextView.setText(" ");
-                            }
+                        if (difference <= 3.0) {
+                            noteTextView.setText(notesList[i][0]);
+                            return;
+                        } else {
+                            noteTextView.setText(" ");
                         }
+                    }
                     }
 
 
