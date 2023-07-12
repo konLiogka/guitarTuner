@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     public TextView noteTextView;
     private PitchDetector pitchDetector;
 
-
+   private Boolean tuningsFlag=false;
 
     public  String[][] notesList = {
 
@@ -127,13 +127,24 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                pitchDetector.stop();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 TuningFragment fragment = new TuningFragment();
                 fragmentTransaction.replace(R.id.fragmenttuning, fragment);
-                fragmentTransaction.commit();
+                if(!tuningsFlag){
+
+                    pitchDetector.stop();
+
+                    fragmentTransaction.commit();
+
+                    tuningsFlag=true;
+                }else{
+                    pitchDetector.start(getApplicationContext());
+                    fragmentTransaction.remove(fragment).commit();
+
+                    tuningsFlag=false;
+                }
+
 
 
 
@@ -159,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
             public void run() {
 
-                if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
+                if(pitchFrequency>50 &&  pitchFrequency<1500 ) {
 
 
 

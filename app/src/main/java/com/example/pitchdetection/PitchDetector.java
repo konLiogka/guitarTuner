@@ -93,7 +93,7 @@ public class PitchDetector {
 
         // Hamming Windowing for reducing distortion
         double[] windowedBuffer = new double[audioBuffer.length];
-        double alpha = 0.53;
+        double alpha = 0.5;
         double beta = 1 - alpha;
         for (int i = 0; i < audioBuffer.length; i++) {
             double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
@@ -139,17 +139,21 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.4 ; //I had to make the threshold way higher than the recommended value (0.1) because it wouldn't detect the lower notes. If anyone can help with this ty.
+        double threshold = 0.43 ;
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
-            if (cumulativeMeanNormalizedDifference[lag] < threshold) {
-                pitchPeriod = lag;
-                break;
+            if(cumulativeMeanNormalizedDifference[lag]< threshold){
+              while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
+                  lag++;
+                  pitchPeriod = lag;
+
+              }
+              break;
             }
         }
 
         // Octave-based thresholding
-        int subOctaves =   7;
+        int subOctaves =  10;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
@@ -161,13 +165,13 @@ public class PitchDetector {
 
 
         // Multiple parabolic interpolations
-        int numInterpolations = 20;
+        int numInterpolations =  20;
         double interpolatedPeak = pitchPeriod;
         for (int iteration = 0; iteration < numInterpolations; iteration++) {
             interpolatedPeak = pitchPeriod;
             if (pitchPeriod > 1 && pitchPeriod < bufferSize - 1) {
                 double delta = dMean[pitchPeriod + 1] - dMean[pitchPeriod - 1];
-                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod]; 
+                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod];
                 if (delta != 0 && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod - 1]) <= thresholdDelta && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod + 1]) <= thresholdDelta) {
                     interpolatedPeak += (dMean[pitchPeriod - 1] - dMean[pitchPeriod + 1]) / (2 * delta);
                 }
