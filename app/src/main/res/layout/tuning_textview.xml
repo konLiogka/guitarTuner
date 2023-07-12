@@ -12,6 +12,7 @@
         android:backgroundTint="#262626"
         app:cardCornerRadius="13dp"
         app:cardElevation="7dp"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

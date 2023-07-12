@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.Manifest;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRequestedOrientation(ActivityInfo. SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
             public void run() {
 
-                if(pitchFrequency>50 &&  pitchFrequency<1500 ) {
+                if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
 
 
 

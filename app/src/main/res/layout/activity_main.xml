@@ -11,29 +11,29 @@
         android:id="@+id/freq"
         android:layout_width="261dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/vt323"
         android:gravity="center"
 
         android:textColor="#A2FF86"
         android:textSize="36dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="410dp"
-        android:layout_height="205dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="411dp"
+        android:layout_height="169dp"
+        android:layout_marginTop="68dp"
         android:fontFamily="@font/esp_bold"
         android:gravity="center"
-
         android:textColor="#A2FF86"
         android:textSize="130dp"
+        app:haloColor="@null"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
 
@@ -62,7 +62,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note"
-        app:layout_constraintVertical_bias="0.956">
+        app:layout_constraintVertical_bias="0.956"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
             android:id="@+id/tuningText"
@@ -82,7 +83,6 @@
     </androidx.cardview.widget.CardView>
 
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="282dp"
@@ -96,7 +96,7 @@
         android:id="@+id/s3"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -118,10 +118,10 @@
         android:id="@+id/s4"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="84dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note" />
 
@@ -129,10 +129,10 @@
         android:id="@+id/s5"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/s4" />
 
@@ -146,13 +146,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/s5"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <Button
         android:id="@+id/s1"
         android:layout_width="58dp"
         android:layout_height="57dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#A2FF86"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
