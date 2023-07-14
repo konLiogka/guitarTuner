@@ -15,6 +15,7 @@ import android.os.Bundle;
 
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -118,23 +119,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                TuningFragment fragment = new TuningFragment();
-                fragmentTransaction.replace(R.id.fragmenttuning, fragment);
-                if(!tuningsFlag){
-
-                    pitchDetector.stop();
-
-                    fragmentTransaction.commit();
-
-                    tuningsFlag=true;
-                }else{
-                    pitchDetector.start(getApplicationContext());
-                    fragmentTransaction.remove(fragment).commit();
-
-                    tuningsFlag=false;
-                }
+               onClickCardView();
 
 
 
@@ -142,7 +127,25 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             }
         });
     }
+    void onClickCardView( ){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        TuningFragment fragment = new TuningFragment();
+        fragmentTransaction.replace(R.id.fragmenttuning, fragment);
+        if(!tuningsFlag){
 
+            pitchDetector.stop();
+
+            fragmentTransaction.commit();
+
+            tuningsFlag=true;
+        }else{
+            pitchDetector.start(getApplicationContext());
+            fragmentTransaction.remove(fragment).commit();
+
+            tuningsFlag=false;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -191,5 +194,25 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
         });
+    }
+
+    public void setButtonValues(String[] notes) {
+       Button s1,s2,s3,s4,s5,s6;
+          s1 = findViewById(R.id.s1);
+          s2 = findViewById(R.id.s2);
+          s3 = findViewById(R.id.s3);
+          s4 = findViewById(R.id.s4);
+          s5 = findViewById(R.id.s5);
+          s6 = findViewById(R.id.s6);
+
+        s1.setText(notes[0]);
+        s2.setText(notes[1]);
+        s3.setText(notes[2]);
+        s4.setText(notes[3]);
+        s5.setText(notes[4]);
+        s6.setText(notes[5]);
+        onClickCardView();
+
+
     }
 }

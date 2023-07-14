@@ -158,7 +158,7 @@ public class PitchDetector {
 
         int pitchPeriod = 0;
         for (int lag = 1; lag < bufferSize; lag++) {
-            if(cumulativeMeanNormalizedDifference[lag]< threshold){
+            if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
               while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
                   lag++;
                   pitchPeriod = lag;

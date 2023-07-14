@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TuningFragment extends Fragment {
+public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemClickListener{
     private RecyclerView recyclerView;
     private RecyclerAdapter adapter;
+
+
     public TuningFragment() {
         // Required empty public constructor
     }
@@ -32,6 +34,7 @@ public class TuningFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 
 
@@ -57,11 +60,23 @@ public class TuningFragment extends Fragment {
 
 
 
+
+
+
         adapter = new RecyclerAdapter(data);
+        adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
         return view;
 
 
+    }
+
+    @Override
+    public void onItemClick(String[] notes) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.setButtonValues(notes);
+        }
     }
 }
