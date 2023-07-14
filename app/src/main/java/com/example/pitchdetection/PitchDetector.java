@@ -151,7 +151,7 @@ public class PitchDetector {
         double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
 
         if (normalizedEnergy < 0.5) {
-            threshold += 0.3;
+            threshold += 0.2;
         } else {
             threshold -= 0.1;
         }
