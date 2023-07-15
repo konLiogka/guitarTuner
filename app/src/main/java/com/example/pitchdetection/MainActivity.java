@@ -3,6 +3,7 @@ package com.example.pitchdetection;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -174,8 +176,32 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                         double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
-                        if (Math.abs(cents) <= 30) {
+                        if (Math.abs(cents) <= 50) {
                             noteTextView.setText(notesList[i][0]);
+                            int maxOffset = 600; // Maximum horizontal offset in pixels
+                            double maxCents = 50.0; // Maximum cents value
+                            double minCents = -50.0; // Minimum cents value
+
+                            double rangeCents = maxCents - minCents;
+                            double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
+
+
+                             ConstraintLayout visibleArea = findViewById(R.id.constraintL);
+                            ImageView pointer = findViewById(R.id.pointer);
+
+                            // Calculate the boundaries of the visible area
+                            int visibleWidth = visibleArea.getWidth(); // Width of the visible area in pixels
+                            int indicatorWidth = pointer.getWidth(); // Width of the indicator icon in pixels
+                            int maxVisibleOffset = visibleWidth - indicatorWidth; // Maximum offset within the visible area
+
+                         // Ensure the offset stays within the visible range
+                            offset = Math.max(-maxVisibleOffset / 2.0, Math.min(maxVisibleOffset / 2.0, offset));
+
+                               // Calculate the target X position within the visible area
+                            float centerX = visibleArea.getX() + visibleWidth / 2f; // X position of the center of the visible area
+                            float targetX = centerX + (float) offset;
+
+                            pointer.setTranslationX(targetX);
                             return;
                         } else {
                             noteTextView.setText(" ");

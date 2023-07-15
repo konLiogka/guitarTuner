@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#262626"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/constraintL">
 
     <TextView
         android:id="@+id/freq"
@@ -191,10 +192,10 @@
         android:layout_width="35dp"
         android:layout_height="54dp"
         app:layout_constraintBottom_toTopOf="@+id/note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/indicator"
+
         app:layout_constraintTop_toBottomOf="@+id/freq"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/pointer" />
+        app:srcCompat="@drawable/pointer"
+        tools:layout_editor_absoluteX="188dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -93,7 +93,7 @@ public class PitchDetector {
 
         // Hamming Windowing for reducing distortion
         double[] windowedBuffer = new double[audioBuffer.length];
-        double alpha = 0.6;
+        double alpha = 0.7;
         double beta = 1 - alpha;
         for (int i = 0; i < audioBuffer.length; i++) {
             double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
@@ -138,7 +138,7 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.12;
+        double threshold = 0.15;
         double energySum = 0.0;
         for (int i = 0; i < bufferSize; i++) {
             energySum += buffer[i] * buffer[i];
@@ -147,8 +147,8 @@ public class PitchDetector {
 
         double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
 
-        if (normalizedEnergy < 0.3  ) {
-            threshold += 0.25;
+        if (normalizedEnergy < 0.6  ) {
+            threshold += 0.3;
         }
         int lag;
 
