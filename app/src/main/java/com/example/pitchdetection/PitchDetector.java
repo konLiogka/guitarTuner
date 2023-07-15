@@ -177,8 +177,7 @@ public class PitchDetector {
         }*/
         int x0 = lag < 1 ? lag : lag - 1;
         int x2 = lag + 1 < cumulativeMeanNormalizedDifference.length ? lag + 1 : lag;
-
-        // Finds the better tau estimate
+ 
         double newLag;
 
         if (x0 == lag) {
@@ -194,8 +193,7 @@ public class PitchDetector {
                 newLag = x0;
             }
         } else {
-            // Fit the parabola between the first point, current tau, and the last point to find a
-            // better tau estimate.
+          
             double s0 = cumulativeMeanNormalizedDifference[x0];
             double s1 = cumulativeMeanNormalizedDifference[lag];
             double s2 = cumulativeMeanNormalizedDifference[x2];
