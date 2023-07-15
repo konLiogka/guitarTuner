@@ -178,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                         if (Math.abs(cents) <= 50) {
                             noteTextView.setText(notesList[i][0]);
-                            int maxOffset = 600; // Maximum horizontal offset in pixels
-                            double maxCents = 50.0; // Maximum cents value
-                            double minCents = -50.0; // Minimum cents value
+                            int maxOffset = 600;
+                            double maxCents = 50.0;
+                            double minCents = -50.0;
 
                             double rangeCents = maxCents - minCents;
                             double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
