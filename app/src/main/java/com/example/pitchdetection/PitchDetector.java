@@ -139,9 +139,7 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.13;
-
-
+        double threshold = 0.15;
         double energySum = 0.0;
         for (int i = 0; i < bufferSize; i++) {
             energySum += buffer[i] * buffer[i];
@@ -150,52 +148,64 @@ public class PitchDetector {
 
         double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
 
-        if (normalizedEnergy < 0.5) {
+        if (normalizedEnergy < 0.3  ) {
             threshold += 0.3;
-        } else {
-            threshold -= 0.1;
         }
+        int lag;
 
-        int pitchPeriod = 0;
-        for (int lag = 1; lag < bufferSize; lag++) {
+        for (  lag = 2; lag < bufferSize; lag++) {
             if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
               while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
                   lag++;
-                  pitchPeriod = lag;
 
               }
               break;
             }
         }
 
-        // Octave-based thresholding
-        int subOctaves =  8;
+        lag = lag >= bufferSize ? bufferSize - 1 : lag;
+
+     /*   // Octave-based thresholding
+        int subOctaves =   8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
-        for (int lag = subOctaveStart + 1; lag < subOctaveEnd; lag++) {
+        for ( lag = subOctaveStart + 1; lag < subOctaveEnd; lag++) {
             if (cumulativeMeanNormalizedDifference[lag] < cumulativeMeanNormalizedDifference[pitchPeriod]) {
                 pitchPeriod = lag;
             }
-        }
+        }*/
+        int x0 = lag < 1 ? lag : lag - 1;
+        int x2 = lag + 1 < cumulativeMeanNormalizedDifference.length ? lag + 1 : lag;
 
+        // Finds the better tau estimate
+        double newLag;
 
-        // Multiple parabolic interpolations
-        int numInterpolations =  10;
-        double interpolatedPeak = pitchPeriod;
-        for (int iteration = 0; iteration < numInterpolations; iteration++) {
-            interpolatedPeak = pitchPeriod;
-            if (pitchPeriod > 1 && pitchPeriod < bufferSize - 1) {
-                double delta = dMean[pitchPeriod + 1] - dMean[pitchPeriod - 1];
-                double thresholdDelta = 0.1* cumulativeMeanNormalizedDifference[pitchPeriod];
-                if (delta != 0 && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod - 1]) <= thresholdDelta && Math.abs(dMean[pitchPeriod] - dMean[pitchPeriod + 1]) <= thresholdDelta) {
-                    interpolatedPeak += (dMean[pitchPeriod - 1] - dMean[pitchPeriod + 1]) / (2 * delta);
-                }
+        if (x0 == lag) {
+            if (cumulativeMeanNormalizedDifference[lag] <= cumulativeMeanNormalizedDifference[x2]) {
+                newLag = lag;
+            } else {
+                newLag = x2;
             }
-            pitchPeriod = (int) interpolatedPeak;
+        } else if (x2 == lag) {
+            if (cumulativeMeanNormalizedDifference[lag] <= cumulativeMeanNormalizedDifference[x0]) {
+                newLag = lag;
+            } else {
+                newLag = x0;
+            }
+        } else {
+            // Fit the parabola between the first point, current tau, and the last point to find a
+            // better tau estimate.
+            double s0 = cumulativeMeanNormalizedDifference[x0];
+            double s1 = cumulativeMeanNormalizedDifference[lag];
+            double s2 = cumulativeMeanNormalizedDifference[x2];
 
+            newLag = lag + (s2 - s0) / (2 * (2 * s1 - s2 - s0));
         }
-        return interpolatedPeak;
+
+
+
+        return newLag;
     }
 
     }

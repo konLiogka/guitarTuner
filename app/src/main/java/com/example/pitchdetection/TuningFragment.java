@@ -76,7 +76,7 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
     public void onItemClick(String[] notes) {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
-            activity.setButtonValues(notes);
+            activity.setTuning(notes);
         }
     }
 }

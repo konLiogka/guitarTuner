@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                         double difference = Math.abs(pitchFrequency - targetFrequency);
                         double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
-                        if (difference <= 3.0) {
+                        if (Math.abs(cents) <= 30) {
                             noteTextView.setText(notesList[i][0]);
                             return;
                         } else {
@@ -196,14 +196,14 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         });
     }
 
-    public void setButtonValues(String[] notes) {
-       Button s1,s2,s3,s4,s5,s6;
-          s1 = findViewById(R.id.s1);
-          s2 = findViewById(R.id.s2);
-          s3 = findViewById(R.id.s3);
-          s4 = findViewById(R.id.s4);
-          s5 = findViewById(R.id.s5);
-          s6 = findViewById(R.id.s6);
+    public void setTuning(String[] notes) {
+        Button s1,s2,s3,s4,s5,s6;
+        s1 = findViewById(R.id.s1);
+        s2 = findViewById(R.id.s2);
+        s3 = findViewById(R.id.s3);
+        s4 = findViewById(R.id.s4);
+        s5 = findViewById(R.id.s5);
+        s6 = findViewById(R.id.s6);
 
         s1.setText(notes[0]);
         s2.setText(notes[1]);
@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s5.setText(notes[4]);
         s6.setText(notes[5]);
         onClickCardView();
+
 
 
     }
