@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                     pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
                     for (int i = 0; i < notesList.length; i++) {
                         double targetFrequency = Double.parseDouble(notesList[i][1]);
-                        double difference = Math.abs(pitchFrequency - targetFrequency);
+
                         double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
                         if (Math.abs(cents) <= 30) {

@@ -100,7 +100,6 @@ public class PitchDetector {
             windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
         }
 
- 
         int bufferSize = windowedBuffer.length;
         double[] difference = new double[bufferSize];
         double[] cumulativeMeanNormalizedDifference = new double[bufferSize];
@@ -139,7 +138,7 @@ public class PitchDetector {
 
 
         // Absolute threshold
-        double threshold = 0.15;
+        double threshold = 0.12;
         double energySum = 0.0;
         for (int i = 0; i < bufferSize; i++) {
             energySum += buffer[i] * buffer[i];
@@ -149,7 +148,7 @@ public class PitchDetector {
         double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
 
         if (normalizedEnergy < 0.3  ) {
-            threshold += 0.3;
+            threshold += 0.25;
         }
         int lag;
 
@@ -165,19 +164,20 @@ public class PitchDetector {
 
         lag = lag >= bufferSize ? bufferSize - 1 : lag;
 
-     /*   // Octave-based thresholding
-        int subOctaves =   8;
+        // Octave-based thresholding
+        int subOctaves = 12;
         int subOctaveSize = bufferSize / subOctaves;
-        int subOctaveStart = (pitchPeriod / subOctaveSize) * subOctaveSize;
+        int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
-        for ( lag = subOctaveStart + 1; lag < subOctaveEnd; lag++) {
-            if (cumulativeMeanNormalizedDifference[lag] < cumulativeMeanNormalizedDifference[pitchPeriod]) {
-                pitchPeriod = lag;
+        for (int i = subOctaveStart + 1; i < subOctaveEnd; i++) {
+            if (cumulativeMeanNormalizedDifference[i] < cumulativeMeanNormalizedDifference[lag]) {
+                lag = i;
             }
-        }*/
+        }
         int x0 = lag < 1 ? lag : lag - 1;
         int x2 = lag + 1 < cumulativeMeanNormalizedDifference.length ? lag + 1 : lag;
- 
+
+
         double newLag;
 
         if (x0 == lag) {
@@ -193,7 +193,8 @@ public class PitchDetector {
                 newLag = x0;
             }
         } else {
-          
+            // Fit the parabola between the first point, current tau, and the last point to find a
+            // better tau estimate.
             double s0 = cumulativeMeanNormalizedDifference[x0];
             double s1 = cumulativeMeanNormalizedDifference[lag];
             double s2 = cumulativeMeanNormalizedDifference[x2];
