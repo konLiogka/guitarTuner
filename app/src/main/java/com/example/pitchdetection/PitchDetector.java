@@ -122,7 +122,7 @@ public class PitchDetector {
             }
             cumulativeMeanNormalizedDifference[lag] = difference[lag] / (cmndf / lag);
         }
-        //Calculating the interpolated peak using parabolicInterpolation along with absolute and octave based threshold
+        //Calculating the interpolated peak using parabolic Interpolation along with absolute and octave based threshold
         double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean);
         double pitchFrequency = SAMPLE_RATE / interpolatedPeak;
 
@@ -193,8 +193,7 @@ public class PitchDetector {
                 newLag = x0;
             }
         } else {
-            // Fit the parabola between the first point, current tau, and the last point to find a
-            // better tau estimate.
+
             double s0 = cumulativeMeanNormalizedDifference[x0];
             double s1 = cumulativeMeanNormalizedDifference[lag];
             double s2 = cumulativeMeanNormalizedDifference[x2];
