@@ -189,16 +189,16 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                              ConstraintLayout visibleArea = findViewById(R.id.constraintL);
                             ImageView pointer = findViewById(R.id.pointer);
 
-                            // Calculate the boundaries of the visible area
-                            int visibleWidth = visibleArea.getWidth(); // Width of the visible area in pixels
-                            int indicatorWidth = pointer.getWidth(); // Width of the indicator icon in pixels
-                            int maxVisibleOffset = visibleWidth - indicatorWidth; // Maximum offset within the visible area
 
-                         // Ensure the offset stays within the visible range
+                            int visibleWidth = visibleArea.getWidth();
+                            int indicatorWidth = pointer.getWidth();
+                            int maxVisibleOffset = visibleWidth - indicatorWidth;
+
+
                             offset = Math.max(-maxVisibleOffset / 2.0, Math.min(maxVisibleOffset / 2.0, offset));
 
-                               // Calculate the target X position within the visible area
-                            float centerX = visibleArea.getX() + visibleWidth / 2f; // X position of the center of the visible area
+
+                            float centerX = visibleArea.getX() + visibleWidth / 2f;
                             float targetX = centerX + (float) offset;
 
                             pointer.setTranslationX(targetX);
