@@ -90,40 +90,26 @@ public class PitchDetector {
 
 
     private double computePitchFrequency(short[] audioBuffer) {
-
         // Hamming Windowing for reducing distortion
-        double[] windowedBuffer = new double[audioBuffer.length];
-        double alpha = 0.7;
-        double beta = 1 - alpha;
-        for (int i = 0; i < audioBuffer.length; i++) {
-            double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
-            windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
-        }
+        double[] windowedBuffer = HammingWindow(audioBuffer);
 
         int bufferSize = windowedBuffer.length;
-        double[] difference = new double[bufferSize];
-        double[] cumulativeMeanNormalizedDifference = new double[bufferSize];
-        double[] dMean = new double[bufferSize];
 
       // Autocorrelation function
-        for (int lag = 0; lag < bufferSize; lag++) {
-            for (int index = 0; index < bufferSize - lag; index++) {
-                double diff = windowedBuffer[index] - windowedBuffer[index + lag];
-                difference[lag] += diff * diff;
-            }
-        }
+        double[] difference=Autocorrelation(windowedBuffer);
 
        // Cumulative mean normalized difference function
-        cumulativeMeanNormalizedDifference[0] = 1;
-        for (int lag = 1; lag < bufferSize; lag++) {
-            double cmndf = 0;
-            for (int index = 1; index <= lag; index++) {
-                cmndf += difference[index];
-            }
-            cumulativeMeanNormalizedDifference[lag] = difference[lag] / (cmndf / lag);
-        }
+        double[]  cumulativeMeanNormalizedDifference = CumulativeMeanNormalizedDifference(difference, bufferSize);
+
+        // Absolute threshold
+        int lag = AbsoluteThreshold(cumulativeMeanNormalizedDifference,bufferSize);
+
+
+        // Octave-based thresholding
+        lag= OctaveThreshold(bufferSize,lag,cumulativeMeanNormalizedDifference);
+
         //Calculating the interpolated peak using parabolic Interpolation along with absolute and octave based threshold
-        double interpolatedPeak = calculateInterpolatedPeak(cumulativeMeanNormalizedDifference, bufferSize, dMean);
+        double interpolatedPeak = parabolicInterpolation(cumulativeMeanNormalizedDifference  , lag );
         double pitchFrequency = SAMPLE_RATE / interpolatedPeak;
 
         if (listener != null) {
@@ -134,10 +120,46 @@ public class PitchDetector {
 
     }
 
-    public double calculateInterpolatedPeak(double[] cumulativeMeanNormalizedDifference, int bufferSize, double[] dMean ) {
+    private double[] HammingWindow( short[] audioBuffer){
+        double[] windowedBuffer = new double[audioBuffer.length];
+        double alpha = 0.7;
+        double beta = 1 - alpha;
+        for (int i = 0; i < audioBuffer.length; i++) {
+            double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
+            windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
+        }
+        return windowedBuffer;
+    }
 
+    private double[] Autocorrelation(double[] windowedBuffer){
+        int bufferSize = windowedBuffer.length;
+        double[] difference = new double[bufferSize];
 
-        // Absolute threshold
+        for (int lag = 0; lag < bufferSize; lag++) {
+            for (int index = 0; index < bufferSize - lag; index++) {
+                double diff = windowedBuffer[index] - windowedBuffer[index + lag];
+                difference[lag] += diff * diff;
+            }
+        }
+        return difference;
+    }
+
+    private double[] CumulativeMeanNormalizedDifference(double[] difference, int bufferSize){
+        double[] cumulativeMeanNormalizedDifference = new double[bufferSize];
+
+        cumulativeMeanNormalizedDifference[0] = 1;
+        for (int lag = 1; lag < bufferSize; lag++) {
+            double cmndf = 0;
+            for (int index = 1; index <= lag; index++) {
+                cmndf += difference[index];
+            }
+            cumulativeMeanNormalizedDifference[lag] = difference[lag] / (cmndf / lag);
+        }
+        return cumulativeMeanNormalizedDifference;
+    }
+
+    private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
+
         double threshold = 0.15;
         double energySum = 0.0;
         for (int i = 0; i < bufferSize; i++) {
@@ -148,24 +170,25 @@ public class PitchDetector {
         double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
 
         if (normalizedEnergy < 0.6  ) {
-            threshold += 0.3;
+            threshold += 0.26;
         }
         int lag;
 
         for (  lag = 2; lag < bufferSize; lag++) {
             if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
-              while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
-                  lag++;
+                while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
+                    lag++;
 
-              }
-              break;
+                }
+                break;
             }
         }
-
         lag = lag >= bufferSize ? bufferSize - 1 : lag;
+        return lag;
+    }
 
-        // Octave-based thresholding
-        int subOctaves = 12;
+    private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
+        int subOctaves = 3;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
@@ -174,6 +197,11 @@ public class PitchDetector {
                 lag = i;
             }
         }
+        return lag;
+    }
+
+    public double parabolicInterpolation(double[] cumulativeMeanNormalizedDifference , int lag  ) {
+
         int x0 = lag < 1 ? lag : lag - 1;
         int x2 = lag + 1 < cumulativeMeanNormalizedDifference.length ? lag + 1 : lag;
 
@@ -205,6 +233,10 @@ public class PitchDetector {
 
         return newLag;
     }
+
+
+
+
 
     }
 
