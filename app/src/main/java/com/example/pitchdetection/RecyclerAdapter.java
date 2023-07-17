@@ -17,7 +17,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     static private List<String> items;
 
     public RecyclerAdapter(List<String> items) {
-        this.items = items;
+        RecyclerAdapter.items = items;
     }
 
     @Override
@@ -40,13 +40,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     static private OnItemClickListener listener;
 
     public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+        RecyclerAdapter.listener = listener;
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
-        public Button s1,s2,s3,s4,s5,s6;
+
 
         public ViewHolder(View itemView, View itemView2) {
             super(itemView);
@@ -58,7 +58,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     if (position != RecyclerView.NO_POSITION && listener != null) {
                         String clickedItem = items.get(position);
                         String notesString = clickedItem.substring(clickedItem.indexOf("(") + 1, clickedItem.indexOf(")"));
-                        notesString = notesString.replaceAll("[0-9]", "");
+
                         String[] notes = notesString.split(" ");
                         listener.onItemClick(notes);
                     }

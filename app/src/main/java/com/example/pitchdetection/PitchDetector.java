@@ -8,6 +8,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import androidx.core.app.ActivityCompat;
 
  
@@ -71,7 +73,11 @@ public class PitchDetector {
         @Override
         public void run() {
 
-
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             int bytesRead = audioRecord.read(buffer, 0, BUFFER_SIZE);
 
             if (bytesRead > 0) {
@@ -160,21 +166,15 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-        double threshold = 0.15;
-        double energySum = 0.0;
-        for (int i = 0; i < bufferSize; i++) {
-            energySum += buffer[i] * buffer[i];
-        }
-        double averageEnergy = energySum / bufferSize;
 
-        double normalizedEnergy = averageEnergy / (32768.0 * 32768.0);
+        // Absolute threshold
+        double threshold = 0.31;
 
-        if (normalizedEnergy < 0.6  ) {
-            threshold += 0.26;
-        }
+
+
         int lag;
 
-        for (  lag = 2; lag < bufferSize; lag++) {
+        for (  lag = 2; lag < bufferSize-1; lag++) {
             if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
                 while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
                     lag++;
@@ -188,11 +188,11 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves = 3;
+        int subOctaves =8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
-        for (int i = subOctaveStart + 1; i < subOctaveEnd; i++) {
+        for (int i = subOctaveStart + 1; i < subOctaveEnd && i < cumulativeMeanNormalizedDifference.length; i++) {
             if (cumulativeMeanNormalizedDifference[i] < cumulativeMeanNormalizedDifference[lag]) {
                 lag = i;
             }

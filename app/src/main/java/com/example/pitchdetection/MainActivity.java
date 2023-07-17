@@ -10,8 +10,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 
@@ -25,9 +27,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     public TextView pitchTextView;
     public TextView noteTextView;
     private PitchDetector pitchDetector;
-
+    private String[] table3 ;
    private Boolean tuningsFlag=false;
-
+   private   Button s1,s2,s3,s4,s5,s6;
     public  String[][] notesList = {
 
            {"A1", "55.00"},
@@ -92,7 +94,19 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
            {"G#6", "1661.22"},
            {"A6", "1760.00"},
            {"A#6", "1864.66"},
-           {"B6", "1975.53"}
+           {"B6", "1975.53"},
+            {"C7", "2093.0"},
+            {"C#7", "2217.5"},
+            {"D7", "2349.3"},
+            {"D#7", "2489.0"},
+            {"E7", "2637.0"},
+            {"F7", "2793.8"},
+            {"F#7", "2960.0"},
+            {"G7", "3136.0"},
+            {"G#7", "3322.4"},
+            {"A7", "3520.0"},
+            {"A#7", "3729.3"},
+            {"B7", "3951.1"}
 
    };
     @Override
@@ -103,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        s1 = findViewById(R.id.s1);
+        s2 = findViewById(R.id.s2);
+        s3 = findViewById(R.id.s3);
+        s4 = findViewById(R.id.s4);
+        s5 = findViewById(R.id.s5);
+        s6 = findViewById(R.id.s6);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
@@ -163,57 +184,20 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     @Override
     public void onPitchDetected( final double pitchFrequency) {
         runOnUiThread(new Runnable() {
+
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             @Override
             public void run() {
 
-                if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
 
-
-
-                    pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
-                    for (int i = 0; i < notesList.length; i++) {
-                        double targetFrequency = Double.parseDouble(notesList[i][1]);
-
-                        double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
-
-                        if (Math.abs(cents) <= 50) {
-                            noteTextView.setText(notesList[i][0]);
-                            int maxOffset = 600;
-                            double maxCents = 50.0;
-                            double minCents = -50.0;
-
-                            double rangeCents = maxCents - minCents;
-                            double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
-
-
-                             ConstraintLayout visibleArea = findViewById(R.id.constraintL);
-                            ImageView pointer = findViewById(R.id.pointer);
-
-
-                            int visibleWidth = visibleArea.getWidth();
-                            int indicatorWidth = pointer.getWidth();
-                            int maxVisibleOffset = visibleWidth - indicatorWidth;
-
-
-                            offset = Math.max(-maxVisibleOffset / 2.0, Math.min(maxVisibleOffset / 2.0, offset));
-
-
-                            float centerX = visibleArea.getX() + visibleWidth / 2f;
-                            float targetX = centerX + (float) offset;
-
-                            pointer.setTranslationX(targetX);
-                            return;
-                        } else {
-                            noteTextView.setText(" ");
-                        }
-                    }
+                    if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
+                        pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
+                        setPosition(pitchFrequency);
                     }
 
 
 
-
-
-         }
+            }
 
 
 
@@ -222,14 +206,48 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         });
     }
 
+    private void setPosition(double pitchFrequency){
+        for (String[] strings : notesList) {
+            double targetFrequency = Double.parseDouble(strings[1]);
+
+            double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
+
+            if (Math.abs(cents) <= 50) {
+                noteTextView.setText(strings[0]);
+                int maxOffset = 600;
+                double maxCents = 50.0;
+                double minCents = -50.0;
+
+                double rangeCents = maxCents - minCents;
+                double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
+
+
+                ConstraintLayout visibleArea = findViewById(R.id.constraintL);
+                ImageView pointer = findViewById(R.id.pointer);
+
+
+                int visibleWidth = visibleArea.getWidth();
+                int indicatorWidth = pointer.getWidth();
+                int maxVisibleOffset = visibleWidth - indicatorWidth;
+
+
+                offset = Math.max(-maxVisibleOffset / 2.0, Math.min(maxVisibleOffset / 2.0, offset));
+
+
+                float centerX = visibleArea.getX() + visibleWidth / 2f;
+                float targetX = centerX + (float) offset;
+
+                pointer.setTranslationX(targetX);
+                return;
+            } else {
+                noteTextView.setText(" ");
+            }
+        }
+    }
+
+
+
     public void setTuning(String[] notes) {
-        Button s1,s2,s3,s4,s5,s6;
-        s1 = findViewById(R.id.s1);
-        s2 = findViewById(R.id.s2);
-        s3 = findViewById(R.id.s3);
-        s4 = findViewById(R.id.s4);
-        s5 = findViewById(R.id.s5);
-        s6 = findViewById(R.id.s6);
 
         s1.setText(notes[0]);
         s2.setText(notes[1]);
@@ -238,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s5.setText(notes[4]);
         s6.setText(notes[5]);
         onClickCardView();
+
+
 
 
 

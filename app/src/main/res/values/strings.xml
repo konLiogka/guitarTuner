@@ -1,6 +1,44 @@
 <resources>
-    <string name="app_name">PitchDetection</string>
+    <string name="app_name">StringSync</string>
+    <string-array name="standardE">
+        <item>82.41</item>
+        <item>110.00</item>
+        <item>146.83</item>
+        <item>196.00</item>
+        <item>246.94</item>
+        <item>329.63</item>
+    </string-array>
+    <string-array name="firstStepDown">
+        <item>77.78</item>
+        <item>103.8</item>
+        <item>138.6</item>
+        <item>185.00</item>
+        <item>233.08</item>
+        <item>311.13</item>
+    </string-array>
+    <string-array name="secondStepDown">
+        <item>73.42</item>
+        <item>98.00</item>
+        <item>130.81</item>
+        <item>174.61</item>
+        <item>220.00</item>
+        <item>293.66</item>
+    </string-array>
+    <string-array name="thirdStepDown">
+        <item>69.30</item>
+        <item>92.50 </item>
+        <item>123.47</item>
+        <item>164.81</item>
+        <item>207.65</item>
+        <item>277.18</item>
+    </string-array>
+    <string-array name="forthStepDown">
+        <item>65.41</item>
+        <item>87.31</item>
+        <item>110.00</item>
+        <item>155.56</item>
+        <item>196.00</item>
+        <item>261.63</item>
+    </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -51,7 +51,7 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         List<String> data = new ArrayList<>();
-        data.add("Manual Tuning");
+        data.add("Automatic Tuning");
         data.add("Standard E (E2 A2 D3 G3 B3 e4)");
         data.add("1st Down (D#2 G#2 C#3 F#3 A#3 d#4)");
         data.add("2st Down (D2 G2 C3 F3 A3 d4)");
