@@ -10,27 +10,38 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
+
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
+import android.content.res.ColorStateList;
+
+import android.graphics.Color;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener {
+
+public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener, View.OnClickListener   {
     public TextView pitchTextView;
     public TextView noteTextView;
     private PitchDetector pitchDetector;
-    private String[] table3 ;
+
    private Boolean tuningsFlag=false;
    private   Button s1,s2,s3,s4,s5,s6;
-    public  String[][] notesList = {
+   private  ManualTuning manualT;
+    private   String tuningText ="Automatic Tuning";
+
+    private Button selectedB ;
+private int counter=0;
+
+    public static  String[][] notesList = {
 
            {"A1", "55.00"},
            {"A#1", "58.27"},
@@ -69,44 +80,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
            {"G4", "392.00"},
            {"G#4", "415.30"},
            {"A4", "440.00"},
-           {"A#4", "466.16"},
-           {"B4", "493.88"},
-           {"C5", "523.25"},
-           {"C#5", "554.37"},
-           {"D5", "587.33"},
-           {"D#5", "622.25"},
-           {"E5", "659.25"},
-           {"F5", "698.46"},
-           {"F#5", "739.99"},
-           {"G5", "783.99"},
-           {"G#5", "830.61"},
-           {"A5", "880.00"},
-           {"A#5", "932.33"},
-           {"B5", "987.77"},
-           {"C6", "1046.50"},
-           {"C#6", "1108.73"},
-           {"D6", "1174.66"},
-           {"D#6", "1244.51"},
-           {"E6", "1318.51"},
-           {"F6", "1396.91"},
-           {"F#6", "1479.98"},
-           {"G6", "1567.98"},
-           {"G#6", "1661.22"},
-           {"A6", "1760.00"},
-           {"A#6", "1864.66"},
-           {"B6", "1975.53"},
-            {"C7", "2093.0"},
-            {"C#7", "2217.5"},
-            {"D7", "2349.3"},
-            {"D#7", "2489.0"},
-            {"E7", "2637.0"},
-            {"F7", "2793.8"},
-            {"F#7", "2960.0"},
-            {"G7", "3136.0"},
-            {"G#7", "3322.4"},
-            {"A7", "3520.0"},
-            {"A#7", "3729.3"},
-            {"B7", "3951.1"}
+
+
 
    };
     @Override
@@ -125,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s5 = findViewById(R.id.s5);
         s6 = findViewById(R.id.s6);
 
+
+
+
+
+        manualT= new ManualTuning(this);
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
         } else {
@@ -141,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         CardView cardView = findViewById(R.id.tuningCardView);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View view) {
                onClickCardView();
 
@@ -163,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
             tuningsFlag=true;
         }else{
+
+
+
             pitchDetector.start(getApplicationContext());
             fragmentTransaction.remove(fragment).commit();
 
@@ -183,53 +169,64 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     @Override
     public void onPitchDetected( final double pitchFrequency) {
-        runOnUiThread(new Runnable() {
+        if (selectedB != null) {
+            noteTextView.setText(selectedB.getText());
+        }
+        if (pitchFrequency > 50 && pitchFrequency < 4000) {
+            double cents;
+            double targetFrequency;
+            for (String[] strings : notesList) {
 
-            @SuppressLint({"DefaultLocale", "SetTextI18n"})
-            @Override
-            public void run() {
 
 
-                    if(pitchFrequency>50 &&  pitchFrequency<4000 ) {
-                        pitchTextView.setText(String.format("%.2f", pitchFrequency)  + " Hz");
-                        setPosition(pitchFrequency);
+
+                    if (tuningText.equals("Automatic Tuning")) {
+                        targetFrequency = Double.parseDouble(strings[1]);
+                        cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
+                        if (Math.abs(cents) <= 50) {
+                            pitchTextView.setText(String.format("%.2f", pitchFrequency) + " Hz");
+                            noteTextView.setText(strings[0]);
+                            counter++;
+                            Log.d("ggg", Integer.toString(counter));
+                            setPosition(cents);
+                        }
+
+
+                    } else {
+                        assert selectedB != null;
+                        if (strings[0].equals(selectedB.getText().toString())) {
+                            pitchTextView.setText("");
+                            targetFrequency = Double.parseDouble(strings[1]);
+                            cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
+                            setPosition(cents);
+
+                        }
+
                     }
 
 
 
             }
+        }
 
 
 
 
-
-        });
     }
 
-    private void setPosition(double pitchFrequency){
-        for (String[] strings : notesList) {
-            double targetFrequency = Double.parseDouble(strings[1]);
+    public void setPosition(double cents){
 
-            double cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
-
-            if (Math.abs(cents) <= 50) {
-                noteTextView.setText(strings[0]);
-                int maxOffset = 600;
+                int maxOffset =900;
                 double maxCents = 50.0;
                 double minCents = -50.0;
 
                 double rangeCents = maxCents - minCents;
                 double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
-
-
-                ConstraintLayout visibleArea = findViewById(R.id.constraintL);
-                ImageView pointer = findViewById(R.id.pointer);
-
-
-                int visibleWidth = visibleArea.getWidth();
-                int indicatorWidth = pointer.getWidth();
-                int maxVisibleOffset = visibleWidth - indicatorWidth;
-
+        ConstraintLayout visibleArea = findViewById(R.id.constraintL);
+        ImageView pointer = findViewById(R.id.pointer);
+        int visibleWidth = visibleArea.getWidth();
+        int indicatorWidth = pointer.getWidth();
+        int maxVisibleOffset = visibleWidth - indicatorWidth;
 
                 offset = Math.max(-maxVisibleOffset / 2.0, Math.min(maxVisibleOffset / 2.0, offset));
 
@@ -238,27 +235,79 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                 float targetX = centerX + (float) offset;
 
                 pointer.setTranslationX(targetX);
-                return;
-            } else {
-                noteTextView.setText(" ");
-            }
-        }
+
+
+
     }
 
 
 
-    public void setTuning(String[] notes) {
-
-        s1.setText(notes[0]);
-        s2.setText(notes[1]);
-        s3.setText(notes[2]);
-        s4.setText(notes[3]);
-        s5.setText(notes[4]);
-        s6.setText(notes[5]);
+    public void setTuning(String[] notes, String text) {
         onClickCardView();
+        setBackground();
+        TextView tuning  = findViewById(R.id.tuningText);
+        tuning.setText(text);
+        for (Button button : Arrays.asList(s1,s2, s3, s4, s5, s6)) {
+            button.setText("");
+        }
+        tuningText= text;
+        if(!tuningText.equals("Automatic Tuning")){
+            s1.setText(notes[0]);
+            s2.setText(notes[1]);
+            s3.setText(notes[2]);
+            s4.setText(notes[3]);
+            s5.setText(notes[4]);
+            s6.setText(notes[5]);
 
 
 
+            for (Button button : Arrays.asList(s1,s2, s3, s4, s5, s6)) {
+
+                button.setOnClickListener(this);
+            }
+        }
+
+
+
+    }
+
+
+
+
+    @Override
+      public  void onClick(View v) {
+
+
+        setBackground( );
+
+
+            if (tuningText != null) {
+
+                for (Button button : Arrays.asList(s1,s2, s3, s4, s5, s6)) {
+                    if (!tuningText.equals("Automatic Tuning")) {
+
+                        if (v.getId() == button.getId()) {
+                            selectedB=button;
+                            manualT.changeColor(button);
+                        }
+                    } else {
+                          button.setOnClickListener(null);
+                          selectedB=null;
+                          return;
+                    }
+                }
+
+            }
+
+
+
+    }
+    public void setBackground(){
+        for (Button button : Arrays.asList(s1,s2, s3, s4, s5, s6)) {
+
+            int   color = Color.parseColor("#404040");
+            button.setBackgroundTintList(ColorStateList.valueOf(color));
+        }
 
 
     }

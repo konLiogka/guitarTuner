@@ -8,13 +8,11 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+
 
 import androidx.core.app.ActivityCompat;
 
- 
-//Still WIP for some reason its having trouble detecting lower notes when plucking with a pick. Applying Hamming windowing helped a lot with octave jumping but its still present in some cases
-//My best option is to introduce manual tuning and tuning based on predefined frequencies, for example Standard E tuning.
+
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
@@ -92,8 +90,8 @@ public class PitchDetector {
 
 
     private double computePitchFrequency(short[] audioBuffer) {
+        //Apply window
         double[] Buffer = Window(audioBuffer);
-
 
         int bufferSize = Buffer.length;
 
@@ -159,7 +157,7 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-        double threshold = 0.3;
+        double threshold = 0.4;
         int lag;
 
         for (  lag = 1; lag < bufferSize-1; lag++) {
@@ -176,7 +174,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves =  8;
+        int subOctaves = 8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
