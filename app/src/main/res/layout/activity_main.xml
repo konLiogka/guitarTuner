@@ -73,7 +73,7 @@
             android:layout_margin="8dp"
             android:fontFamily="@font/vt323"
             android:gravity="center"
-            android:text="Manual Tuning"
+            android:text="Automatic Tuning"
             android:textColor="#A2FF86"
             android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -18,7 +18,7 @@ import androidx.core.app.ActivityCompat;
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
-    private static final int BUFFER_SIZE = 1024 * 4;
+    private static final int BUFFER_SIZE = 1024 *8;
     public short[] buffer = new short[BUFFER_SIZE];
     private AudioRecord audioRecord;
     private boolean isRecording = false;
@@ -73,11 +73,7 @@ public class PitchDetector {
         @Override
         public void run() {
 
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             int bytesRead = audioRecord.read(buffer, 0, BUFFER_SIZE);
 
             if (bytesRead > 0) {
@@ -96,13 +92,13 @@ public class PitchDetector {
 
 
     private double computePitchFrequency(short[] audioBuffer) {
-        // Hamming Windowing for reducing distortion
-        double[] windowedBuffer = HammingWindow(audioBuffer);
+        double[] Buffer = Window(audioBuffer);
 
-        int bufferSize = windowedBuffer.length;
+
+        int bufferSize = Buffer.length;
 
       // Autocorrelation function
-        double[] difference=Autocorrelation(windowedBuffer);
+        double[] difference=Autocorrelation(Buffer);
 
        // Cumulative mean normalized difference function
         double[]  cumulativeMeanNormalizedDifference = CumulativeMeanNormalizedDifference(difference, bufferSize);
@@ -112,7 +108,7 @@ public class PitchDetector {
 
 
         // Octave-based thresholding
-        lag= OctaveThreshold(bufferSize,lag,cumulativeMeanNormalizedDifference);
+          lag= OctaveThreshold(bufferSize,lag,cumulativeMeanNormalizedDifference);
 
         //Calculating the interpolated peak using parabolic Interpolation along with absolute and octave based threshold
         double interpolatedPeak = parabolicInterpolation(cumulativeMeanNormalizedDifference  , lag );
@@ -126,15 +122,12 @@ public class PitchDetector {
 
     }
 
-    private double[] HammingWindow( short[] audioBuffer){
-        double[] windowedBuffer = new double[audioBuffer.length];
-        double alpha = 0.7;
-        double beta = 1 - alpha;
+    private double[] Window( short[] audioBuffer){
+        double[] Buffer = new double[audioBuffer.length];
         for (int i = 0; i < audioBuffer.length; i++) {
-            double window = alpha - beta * Math.cos((2 * Math.PI * i) / (audioBuffer.length - 1));
-            windowedBuffer[i] = audioBuffer[i] / 32768.0 * window;
+            Buffer[i] = audioBuffer[i] / 32768.0  ;
         }
-        return windowedBuffer;
+        return Buffer;
     }
 
     private double[] Autocorrelation(double[] windowedBuffer){
@@ -166,15 +159,10 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-
-        // Absolute threshold
-        double threshold = 0.31;
-
-
-
+        double threshold = 0.3;
         int lag;
 
-        for (  lag = 2; lag < bufferSize-1; lag++) {
+        for (  lag = 1; lag < bufferSize-1; lag++) {
             if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
                 while (lag+1<bufferSize && cumulativeMeanNormalizedDifference[lag+1] < cumulativeMeanNormalizedDifference[lag]) {
                     lag++;
@@ -188,7 +176,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves =8;
+        int subOctaves =  8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
