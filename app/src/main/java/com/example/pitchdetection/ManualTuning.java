@@ -18,13 +18,7 @@ public class ManualTuning {
     public void changeColor(Button button){
 
 
-         int color;
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_main, null);
-        color = Color.parseColor("#A2FF86");
 
-
-
-        button.setBackgroundTintList(ColorStateList.valueOf(color));
 
     }
 
