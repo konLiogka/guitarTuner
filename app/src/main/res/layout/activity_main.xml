@@ -73,7 +73,7 @@
             android:layout_margin="8dp"
             android:fontFamily="@font/vt323"
             android:gravity="center"
-            android:text="Automatic Tuning"
+            android:text="Standard E (E2 A2 D3 G3 B3 e4)"
             android:textColor="#A2FF86"
             android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"

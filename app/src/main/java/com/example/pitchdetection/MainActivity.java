@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
    private Boolean tuningsFlag=false;
    private   Button s1,s2,s3,s4,s5,s6;
    private  ManualTuning manualT;
-    private   String tuningText ="Automatic Tuning";
+    private   String tuningText ="Standard E (E2 A2 D3 G3 B3 e4)";
 
     private Button selectedB ;
-private int counter=0;
+
 
     public static  String[][] notesList = {
 
@@ -100,7 +100,21 @@ private int counter=0;
         s5 = findViewById(R.id.s5);
         s6 = findViewById(R.id.s6);
 
+        selectedB=s1;
 
+        s1.setText("E2");
+        s2.setText("A2");
+        s3.setText("D3");
+        s4.setText("G3");
+        s5.setText("B3");
+        s6.setText("e4");
+
+
+
+        for (Button button : Arrays.asList(s1,s2, s3, s4, s5, s6)) {
+
+            button.setOnClickListener(this);
+        }
 
 
 
@@ -170,7 +184,8 @@ private int counter=0;
     @Override
     public void onPitchDetected( final double pitchFrequency) {
         if (selectedB != null) {
-            noteTextView.setText(selectedB.getText());
+
+            noteTextView.setText(selectedB.getText().toString().replaceAll("\\d", ""));
         }
         if (pitchFrequency > 50 && pitchFrequency < 4000) {
             double cents;
@@ -178,23 +193,22 @@ private int counter=0;
             for (String[] strings : notesList) {
 
 
-
+                targetFrequency = Double.parseDouble(strings[1]);
+                cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
                     if (tuningText.equals("Automatic Tuning")) {
-                        targetFrequency = Double.parseDouble(strings[1]);
-                        cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
+
                         if (Math.abs(cents) <= 50) {
                             pitchTextView.setText(String.format("%.2f", pitchFrequency) + " Hz");
                             noteTextView.setText(strings[0]);
-                            counter++;
-                            Log.d("ggg", Integer.toString(counter));
+
                             setPosition(cents);
                         }
 
 
                     } else {
-                        assert selectedB != null;
-                        if (strings[0].equals(selectedB.getText().toString())) {
+
+                        if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) &&  (Math.abs(cents) <= 300) ) {
                             pitchTextView.setText("");
                             targetFrequency = Double.parseDouble(strings[1]);
                             cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);

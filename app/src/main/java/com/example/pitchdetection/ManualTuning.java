@@ -28,7 +28,5 @@ public class ManualTuning {
 
     }
 
-    public void manualTuning(Button btn, double pitchFrequency){
 
-    }
 }
