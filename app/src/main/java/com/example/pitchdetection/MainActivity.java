@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 300)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 400)) {
                         pitchTextView.setText("");
                         targetFrequency = Double.parseDouble(strings[1]);
                         cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
