@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s6 = findViewById(R.id.s6);
 
         selectedB=s1;
-
+        int   color = Color.parseColor("#A2FF86");
+        s1.setBackgroundTintList(ColorStateList.valueOf(color));
         s1.setText("E2");
         s2.setText("A2");
         s3.setText("D3");
