@@ -19,8 +19,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 
-import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -102,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s6 = findViewById(R.id.s6);
 
         selectedB = s1;
-        int color = Color.parseColor("#A2FF86");
-        s1.setBackgroundTintList(ColorStateList.valueOf(color));
+        changeColor(selectedB);
         s1.setText("E2");
         s2.setText("A2");
         s3.setText("D3");
@@ -259,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             button.setText("");
         }
         tuningText = text;
+        changeColor(selectedB);
         if (!tuningText.equals("Automatic Tuning")) {
             s1.setText(notes[0]);
             s2.setText(notes[1]);
