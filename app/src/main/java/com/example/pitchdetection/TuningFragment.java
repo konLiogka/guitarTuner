@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemClickListener{
-    private RecyclerView recyclerView;
-    private RecyclerAdapter adapter;
 
 
     public TuningFragment() {
@@ -45,7 +43,7 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
 
         View view = inflater.inflate(R.layout.fragment_tuning, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerViewer);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewer);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         List<String> data = new ArrayList<>();
@@ -54,15 +52,11 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
         data.add("1st Down (D#2 G#2 C#3 F#3 A#3 d#4)");
         data.add("2st Down (D2 G2 C3 F3 A3 d4)");
         data.add("3st Down (C#2 F#2 B2 E3 G#3 c#4)");
-        data.add("4st Down (C2  F2  A2 D#3 G3  c3)");
+        data.add("4st Down (C2 F2 A2 D#3 G3 c3)");
         data.add("Automatic Tuning");
 
 
-
-
-
-
-        adapter = new RecyclerAdapter(data);
+        RecyclerAdapter adapter = new RecyclerAdapter(data);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
 

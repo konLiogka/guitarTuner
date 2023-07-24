@@ -8,6 +8,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 
 import androidx.core.app.ActivityCompat;
@@ -16,7 +17,7 @@ import androidx.core.app.ActivityCompat;
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
-    private static final int BUFFER_SIZE = 1024 *8;
+    private static final int BUFFER_SIZE = 1024 *4;
     public short[] buffer = new short[BUFFER_SIZE];
     private AudioRecord audioRecord;
     private boolean isRecording = false;
