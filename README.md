@@ -6,3 +6,5 @@ Right now I use a combination of methods. First of all Hamming windowing is appl
 Octave jumps do occur as well as unwanted frequencies. However that's going to be a problem only with manual tuning. If user wants to select a specific tuning, for example Standard E, the error rate will be much smaller.
 
 I will add an extensive description when its finished!
+
+Download app: https://github.com/konLiogka/guitarTuner/blob/main/stringSync.apk
