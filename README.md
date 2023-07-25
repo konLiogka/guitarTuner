@@ -7,4 +7,4 @@ Octave jumps do occur as well as unwanted frequencies. However that's going to b
 
 I will add an extensive description when its finished!
 
-Download app: https://github.com/konLiogka/guitarTuner/blob/main/stringSync.apk
+Download app:  https://github.com/konLiogka/guitarTuner/blob/master/stringSync.apk
