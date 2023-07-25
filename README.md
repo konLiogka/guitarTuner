@@ -10,9 +10,13 @@ I will add an extensive description when its finished!
 Download app:  https://github.com/konLiogka/guitarTuner/blob/master/stringSync.apk
 
 Standard E tuning with manual tuning introduces less errors and octave jumps:
-![Screenshot_20230725_115342_StringSync](https://github.com/konLiogka/guitarTuner/assets/78957746/aa046665-c4a8-4065-88be-e271fe7109cb)
+
+![Screenshot_20230725_115342_StringSync](https://github.com/konLiogka/guitarTuner/assets/78957746/18d134db-8eb2-4ab8-bfa5-c11b58221442)
+
 
 Automatic tuning is more versatile but be aware of some errors and octave jumps!:
-![Screenshot_20230725_115353_StringSync](https://github.com/konLiogka/guitarTuner/assets/78957746/aa5f824f-1464-4a7f-89ff-adec8e849264)
+
+![Screenshot_20230725_115353_StringSync](https://github.com/konLiogka/guitarTuner/assets/78957746/c398a8eb-499c-45d5-aceb-0c605e3c34dc)
+
 
 My goal is to also add custom tunings so you can select whatever note you want.
