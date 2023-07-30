@@ -2,11 +2,28 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintL"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="#262626"
-    tools:context=".MainActivity"
-    android:id="@+id/constraintL">
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/options"
+        android:layout_width="38dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+
+        app:layout_constraintBottom_toBottomOf="@+id/freq"
+        app:layout_constraintEnd_toStartOf="@+id/freq"
+        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/options" />
 
     <TextView
         android:id="@+id/freq"
@@ -51,20 +68,35 @@
         app:layout_constraintTop_toBottomOf="@+id/note">
 
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragmentCustomTuning"
+        android:layout_width="399dp"
+        android:layout_height="497dp"
+        android:layout_gravity="center"
+        android:elevation="11dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/tuningCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/note">
+
+    </FrameLayout>
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/tuningCardView"
         android:layout_width="318dp"
         android:layout_height="51dp"
         android:layout_margin="8dp"
-        android:id="@+id/tuningCardView"
-        app:cardCornerRadius="13dp"
         android:backgroundTint="#262626"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="13dp"
         app:cardElevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note"
-        app:layout_constraintVertical_bias="0.956"
-        android:foreground="?android:attr/selectableItemBackground">
+        app:layout_constraintVertical_bias="0.956">
 
         <TextView
             android:id="@+id/tuningText"
@@ -109,13 +141,13 @@
 
     <Button
         android:id="@+id/s5"
-        android:fontFamily="@font/vt323"
-        android:textColor="@color/black"
-        android:textSize="25dp"
         android:layout_width="82dp"
         android:layout_height="68dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="#404040"
+        android:fontFamily="@font/vt323"
+        android:textColor="@color/black"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/imageView"

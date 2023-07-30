@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     public static String[][] notesList = {
 
-            {"A1", "55.00"},
-            {"A#1", "58.27"},
+
             {"B1", "61.74"},
             {"C2", "65.41"},
             {"C#2", "69.30"},
@@ -143,9 +143,22 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
             }
         });
+
+        ImageView options = findViewById(R.id.options);
+
+        options.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View view) {
+                onClickImageView();
+
+
+            }
+        });
+
     }
 
-    void onClickCardView() {
+    void onClickCardView( ) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         TuningFragment fragment = new TuningFragment();
@@ -167,6 +180,27 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         }
     }
 
+    void onClickImageView( ) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        CustomTuningFragment fragment = new CustomTuningFragment();
+        fragmentTransaction.replace(R.id.fragmentCustomTuning, fragment);
+        if (!tuningsFlag) {
+
+            pitchDetector.stop();
+
+            fragmentTransaction.commit();
+
+            tuningsFlag = true;
+        } else {
+
+
+            pitchDetector.start(getApplicationContext());
+            fragmentTransaction.remove(fragment).commit();
+
+            tuningsFlag = false;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -207,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 400)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 460)) {
                         pitchTextView.setText("");
                         targetFrequency = Double.parseDouble(strings[1]);
                         cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
