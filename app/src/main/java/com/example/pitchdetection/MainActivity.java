@@ -1,7 +1,10 @@
 package com.example.pitchdetection;
 
 
+import static com.example.pitchdetection.TuningsList.*;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -11,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -19,15 +23,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 
-
+import android.view.ContextThemeWrapper;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener, View.OnClickListener {
@@ -35,13 +45,18 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     public TextView noteTextView;
     private PitchDetector pitchDetector;
 
+
+
     private Boolean tuningsFlag = false;
+    private Boolean customFlag = false;
     private Button s1, s2, s3, s4, s5, s6;
 
     private String tuningText = "Standard E (E2 A2 D3 G3 B3 e4)";
 
     private Button selectedB;
 
+
+    private List<String> data=new ArrayList<>();
     public static String[][] notesList = {
 
 
@@ -132,6 +147,16 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         pitchDetector = new PitchDetector();
         pitchDetector.setPitchDetectionListener(this);
 
+        data = getList(this);
+        if(data.isEmpty()){
+            data = TuningsList.fillList(this);
+            saveList(this, data);
+        }
+
+
+
+
+
 
         CardView cardView = findViewById(R.id.tuningCardView);
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +175,24 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
 
             public void onClick(View view) {
-                onClickImageView();
+
+                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper, options);
+
+
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                       if(menuItem.toString().equals("Add Tuning")){
+                           onClickImageView();
+                       }
+
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
 
 
             }
@@ -158,15 +200,15 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     }
 
-    void onClickCardView( ) {
+    private void onClickCardView(  ) {
+        TuningFragment fragment = new TuningFragment(data);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        TuningFragment fragment = new TuningFragment();
+
         fragmentTransaction.replace(R.id.fragmenttuning, fragment);
         if (!tuningsFlag) {
 
             pitchDetector.stop();
-
             fragmentTransaction.commit();
 
             tuningsFlag = true;
@@ -180,25 +222,23 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         }
     }
 
-    void onClickImageView( ) {
+    public void onClickImageView(  ) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         CustomTuningFragment fragment = new CustomTuningFragment();
         fragmentTransaction.replace(R.id.fragmentCustomTuning, fragment);
-        if (!tuningsFlag) {
+        if (!customFlag) {
 
             pitchDetector.stop();
-
             fragmentTransaction.commit();
 
-            tuningsFlag = true;
+            customFlag = true;
         } else {
 
 
             pitchDetector.start(getApplicationContext());
             fragmentTransaction.remove(fragment).commit();
-
-            tuningsFlag = false;
+            customFlag = false;
         }
     }
     @Override
@@ -241,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 460)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 500)) {
                         pitchTextView.setText("");
                         targetFrequency = Double.parseDouble(strings[1]);
                         cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
@@ -258,7 +298,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     }
 
-    public void setPosition(double cents) {
+
+    private void setPosition(double cents) {
 
         int maxOffset = 900;
         double maxCents = 50.0;
@@ -345,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     }
 
-    public void setBackground() {
+    private void setBackground() {
         for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
             int color = Color.parseColor("#404040");
             button.setBackgroundTintList(ColorStateList.valueOf(color));
@@ -358,5 +399,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         color = Color.parseColor("#A2FF86");
         button.setBackgroundTintList(ColorStateList.valueOf(color));
     }
+
+   public void addTuning(String string, Context context){
+       TuningsList.addToList(string, context);
+       data = TuningsList.getList(context);
+       onClickCardView();
+
+   }
+
 }
 

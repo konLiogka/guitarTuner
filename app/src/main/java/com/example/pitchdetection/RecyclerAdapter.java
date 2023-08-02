@@ -32,6 +32,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.tuningOption.setText(item);
     }
 
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -63,7 +64,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                         notes = notesString.split(" ");
                     }
-                        listener.onItemClick(notes, clickedItem);
+                        RecyclerView recyclerView = itemView.findViewById(R.id.recyclerViewer);
+                        listener.onItemClick(notes, clickedItem, recyclerView);
 
 
                 }
@@ -78,6 +80,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String[] notes, String clickedItem);
+        void onItemClick(String[] notes, String clickedItem, RecyclerView recyclerView);
     }
 }

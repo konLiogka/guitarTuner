@@ -57,8 +57,8 @@
 
     <FrameLayout
         android:id="@+id/fragmenttuning"
-        android:layout_width="315dp"
-        android:layout_height="278dp"
+        android:layout_width="378dp"
+        android:layout_height="340dp"
         android:layout_gravity="center"
         android:elevation="11dp"
 
@@ -85,8 +85,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/tuningCardView"
-        android:layout_width="318dp"
-        android:layout_height="51dp"
+        android:layout_width="339dp"
+        android:layout_height="49dp"
         android:layout_margin="8dp"
         android:backgroundTint="#262626"
         android:foreground="?android:attr/selectableItemBackground"

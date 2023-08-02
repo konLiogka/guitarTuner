@@ -7,7 +7,13 @@
 
     <style name="Theme.PitchDetection" parent="Base.Theme.PitchDetection" />
     <!-- Application theme. -->
-
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:background">#262626</item>
+        <item name="android:textColor">#A2FF86</item>
+        <item name="android:fontFamily">@font/vt323</item>
+        <item name="android:textSize">26dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
 
 
 
