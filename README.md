@@ -1,4 +1,4 @@
-Guitar tuner app with JAVA (!!STILL WIP!!)
+Guitar tuner app with JAVA. Download the application from the "application" branch!
 
 This app was utilizes the YIN algorithm for pitch detection, made thanks to this paper: http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf
 
