@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class TuningRecyclerAdapter extends RecyclerView.Adapter<TuningRecyclerAdapter.ViewHolder> {
     static private List<String> items;
 
 
-    public RecyclerAdapter(List<String> items) {
-        RecyclerAdapter.items = items;
+    public TuningRecyclerAdapter(List<String> items) {
+        TuningRecyclerAdapter.items = items;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     static private OnItemClickListener listener;
 
     public void setOnItemClickListener(OnItemClickListener listener) {
-        RecyclerAdapter.listener = listener;
+        TuningRecyclerAdapter.listener = listener;
     }
 
 

@@ -9,6 +9,8 @@
     android:background="#262626"
     tools:context=".MainActivity">
 
+
+
     <ImageView
         android:id="@+id/options"
         android:layout_width="38dp"
@@ -19,7 +21,7 @@
 
         app:layout_constraintBottom_toBottomOf="@+id/freq"
         app:layout_constraintEnd_toStartOf="@+id/freq"
-        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -55,8 +57,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
 
+
+
     <FrameLayout
-        android:id="@+id/fragmenttuning"
+        android:id="@+id/fragmentTuning"
         android:layout_width="378dp"
         android:layout_height="340dp"
         android:layout_gravity="center"
@@ -70,9 +74,22 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/fragmentEditTuning"
+        android:layout_width="match_parent"
+        android:layout_height="481dp"
+        android:layout_gravity="center"
+        android:elevation="11dp"
+        app:layout_constraintBottom_toTopOf="@+id/tuningCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/note">
+
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/fragmentCustomTuning"
-        android:layout_width="399dp"
-        android:layout_height="497dp"
+        android:layout_width="match_parent"
+        android:layout_height="481dp"
         android:layout_gravity="center"
         android:elevation="11dp"
 
@@ -214,7 +231,9 @@
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/indicator" />

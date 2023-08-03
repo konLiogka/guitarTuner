@@ -66,4 +66,17 @@ public class TuningsList {
         saveList(context, data);
         return data;
     }
+
+    public static List<String>  replaceToList( String newString, Context context, int position) {
+        List<String> data = getList(context);
+        data.set(position+11, newString);
+        saveList(context, data);
+        return data;
+    }
+    public static List<String> removeFromList(Context context, int position){
+        List<String> data = getList(context);
+        data.remove(position +11);
+        saveList(context, data);
+        return data;
+    }
 }

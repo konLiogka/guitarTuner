@@ -7,8 +7,8 @@
     android:background="#262626">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="383dp"
-        android:layout_height="57dp"
+        android:layout_width="355dp"
+        android:layout_height="55dp"
         android:backgroundTint="#262626"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="13dp"
@@ -23,7 +23,7 @@
             android:layout_width="357dp"
             android:layout_height="63dp"
             android:fontFamily="@font/vt323"
-            android:gravity="center|center_vertical"
+            android:gravity="left|center_vertical"
             android:text="TextView"
             android:textColor="#A2FF86"
             android:textSize="22dp"

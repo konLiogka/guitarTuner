@@ -4,10 +4,10 @@ package com.example.pitchdetection;
 import static com.example.pitchdetection.TuningsList.*;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,16 +24,12 @@ import android.os.Bundle;
 
 
 import android.view.ContextThemeWrapper;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,15 +42,12 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     private PitchDetector pitchDetector;
 
 
-
-    private Boolean tuningsFlag = false;
-    private Boolean customFlag = false;
     private Button s1, s2, s3, s4, s5, s6;
 
     private String tuningText = "Standard E (E2 A2 D3 G3 B3 e4)";
 
     private Button selectedB;
-
+    private Fragment currentFragment = null;
 
     private List<String> data=new ArrayList<>();
     public static String[][] notesList = {
@@ -163,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             @Override
 
             public void onClick(View view) {
-                onClickCardView();
+                onClickTuningsView();
 
 
             }
@@ -185,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                        if(menuItem.toString().equals("Add Tuning")){
-                           onClickImageView();
+                           onClickCustomTView("",0);
+                       }else if(menuItem.toString().equals("Edit Tuning")){
+                          onClickEditTView();
                        }
 
                         return true;
@@ -200,46 +195,47 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     }
 
-    private void onClickCardView(  ) {
-        TuningFragment fragment = new TuningFragment(data);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.fragmenttuning, fragment);
-        if (!tuningsFlag) {
-
-            pitchDetector.stop();
-            fragmentTransaction.commit();
-
-            tuningsFlag = true;
+    public void onClickCustomTView(String string, int position) {
+        if (currentFragment instanceof CustomTuningFragment) {
+            closeFragment(currentFragment);
         } else {
-
-
-            pitchDetector.start(getApplicationContext());
-            fragmentTransaction.remove(fragment).commit();
-
-            tuningsFlag = false;
+            openFragment(new CustomTuningFragment(string, position), R.id.fragmentCustomTuning);
+        }
+    }
+    public void onClickTuningsView() {
+        if (currentFragment instanceof TuningFragment) {
+            closeFragment(currentFragment);
+        } else {
+            openFragment(new TuningFragment(data), R.id.fragmentTuning);
         }
     }
 
-    public void onClickImageView(  ) {
+    public void onClickEditTView(){
+        if (currentFragment instanceof EditTuningFragment) {
+            closeFragment(currentFragment);
+        } else {
+            openFragment(new EditTuningFragment(data), R.id.fragmentEditTuning);
+        }
+    }
+
+
+    private void openFragment(Fragment fragment, int containerViewId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        CustomTuningFragment fragment = new CustomTuningFragment();
-        fragmentTransaction.replace(R.id.fragmentCustomTuning, fragment);
-        if (!customFlag) {
-
-            pitchDetector.stop();
-            fragmentTransaction.commit();
-
-            customFlag = true;
-        } else {
-
-
-            pitchDetector.start(getApplicationContext());
-            fragmentTransaction.remove(fragment).commit();
-            customFlag = false;
+        if (currentFragment != null) {
+            fragmentTransaction.remove(currentFragment);
         }
+        pitchDetector.stop();
+        fragmentTransaction.replace(containerViewId, fragment).commit();
+        currentFragment = fragment;
+    }
+
+    private void closeFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment).commit();
+        pitchDetector.start(getApplicationContext());
+        currentFragment = null;
     }
     @Override
     protected void onResume() {
@@ -328,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
     public void setTuning(String[] notes, String text) {
-        onClickCardView();
+        onClickTuningsView();
         setBackground();
         TextView tuning = findViewById(R.id.tuningText);
         tuning.setText(text);
@@ -403,8 +399,20 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
    public void addTuning(String string, Context context){
        TuningsList.addToList(string, context);
        data = TuningsList.getList(context);
-       onClickCardView();
+       onClickTuningsView();
 
+   }
+
+   public void replaceTuning(String string, Context context, int position){
+       TuningsList.replaceToList(string, context,position);
+       data = TuningsList.getList(context);
+       onClickTuningsView();
+   }
+
+   public void removeTuning(Context context, int position){
+
+       data = TuningsList.removeFromList(context,position);
+       onClickTuningsView();
    }
 
 }

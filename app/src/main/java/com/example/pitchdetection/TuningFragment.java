@@ -21,7 +21,7 @@ import java.util.List;
 
 
 
-public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemClickListener{
+public class TuningFragment extends Fragment implements TuningRecyclerAdapter.OnItemClickListener{
 
 
 
@@ -56,7 +56,7 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        RecyclerAdapter adapter = new RecyclerAdapter(data);
+        TuningRecyclerAdapter adapter = new TuningRecyclerAdapter(data);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -78,8 +78,6 @@ public class TuningFragment extends Fragment implements RecyclerAdapter.OnItemCl
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             activity.setTuning(notes, clickedItem);
-
-
 
         }
     }
