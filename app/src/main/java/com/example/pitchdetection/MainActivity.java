@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
         } else {
+
             pitchDetector = new PitchDetector();
             pitchDetector.start(this);
         }
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 500)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 480)) {
                         pitchTextView.setText("");
                         targetFrequency = Double.parseDouble(strings[1]);
                         cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
@@ -296,14 +296,14 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
     private void setPosition(double cents) {
-
-        int maxOffset = 900;
+        ConstraintLayout visibleArea = findViewById(R.id.constraintL);
+        int maxOffset =  visibleArea.getWidth();
         double maxCents = 50.0;
         double minCents = -50.0;
 
         double rangeCents = maxCents - minCents;
         double offset = (cents - minCents) / rangeCents * (2 * maxOffset) - maxOffset;
-        ConstraintLayout visibleArea = findViewById(R.id.constraintL);
+
         ImageView pointer = findViewById(R.id.pointer);
         int visibleWidth = visibleArea.getWidth();
         int indicatorWidth = pointer.getWidth();

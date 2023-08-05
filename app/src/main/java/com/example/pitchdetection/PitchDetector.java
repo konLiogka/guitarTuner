@@ -105,9 +105,9 @@ public class PitchDetector {
         // Absolute threshold
         int lag = AbsoluteThreshold(cumulativeMeanNormalizedDifference,bufferSize);
 
+        lag = OctaveThreshold(  bufferSize, lag, cumulativeMeanNormalizedDifference);
 
-        // Octave-based thresholding
-        lag= OctaveThreshold(bufferSize,lag,cumulativeMeanNormalizedDifference);
+
 
         //Calculating the interpolated peak using parabolic Interpolation along with absolute and octave based threshold
         double interpolatedPeak = parabolicInterpolation(cumulativeMeanNormalizedDifference  , lag );
@@ -175,7 +175,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves = 16;
+        int subOctaves = 8;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
