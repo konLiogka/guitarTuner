@@ -1,9 +1,9 @@
 # Application
 
 This is a guitar tuner app. Download the application from [here](https://github.com/konLiogka/guitarTuner/blob/main/app-debug.apk).
-It utilizes the YIN algorithm for pitch detection, made thanks to this [paper](http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf). [Here's](https://www.youtube.com/watch?v=pbleU_p67YU&t=7s) a video showing how it works
+It utilizes the YIN algorithm for pitch detection, made thanks to this [paper](http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf). [Here's](https://www.youtube.com/watch?v=pbleU_p67YU&t=7s) a video showing how it works.  
 > [!NOTE]
-> While the app is finished, there are still some things that I need to change, there may be some small bugs. Also I am thinking of adding microtonal notes and tunings as well as different types of guitars
+> This app may not work properly(lag) on older phones!! While the app is finished, there are still some things that I need to change, there may be some small bugs. Also I am thinking of adding microtonal notes and tunings as well as different types of guitars
 like guitar with more than 6 strings or basses. Coming soon in future versions.
 
 
