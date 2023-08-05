@@ -158,7 +158,7 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-        double threshold = 0.3;
+        double threshold = 0.5;
         int lag;
 
         for (  lag = 1; lag < bufferSize-1; lag++) {

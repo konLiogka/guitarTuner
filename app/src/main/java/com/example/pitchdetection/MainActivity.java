@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 480)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 500)) {
                         pitchTextView.setText("");
                         targetFrequency = Double.parseDouble(strings[1]);
                         cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
     private void setPosition(double cents) {
         ConstraintLayout visibleArea = findViewById(R.id.constraintL);
-        int maxOffset =  visibleArea.getWidth();
+        int maxOffset =  600;
         double maxCents = 50.0;
         double minCents = -50.0;
 
