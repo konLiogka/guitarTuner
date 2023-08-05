@@ -22,7 +22,7 @@ The pitch detection algorithm, while not completely handmade, does not use any e
 * On the other hand, the cumulative mean normalised difference function helps with improving the imperfect periodicity that may occur due to zero-lag dip problem. 
 * Then an absolute threshold is applied so we filter out the frequencies we dont want. 
   The paper suggests a threshold of 0.1 for less errors however I had to use a threshold of 0.3 otherwise it wouldnt detect lower notes. 
-  As a note is let to ring, it will be cut at a specific amplitude depending on the threshold.
+  As a note is let to ring, it will be cut at a specific amplitude depending on the threshold. There's also octave bqsed thresholding which essentially splits the range into sub octaves and selectes the best estimate lag.
 * Next we need to calculate the fundamental frequency of the signal in the correct position, avoiding errors due to noise and disimilar sampling period. 
   This can be done using parabolic interpolation which fits a parabola within a certain range from the peak estimate, resulting in a smoother pitch. It is a very commonly used function in pitch detection algorithms
   and that's because it produces reliable estimates by smoothing the selected frequency spectrum which helps the alignment of the peak.
