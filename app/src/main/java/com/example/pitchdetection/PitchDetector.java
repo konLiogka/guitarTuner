@@ -105,7 +105,7 @@ public class PitchDetector {
         // Absolute threshold
         int lag = AbsoluteThreshold(cumulativeMeanNormalizedDifference,bufferSize);
 
-        lag = OctaveThreshold(  bufferSize, lag, cumulativeMeanNormalizedDifference);
+         lag = OctaveThreshold(  bufferSize, lag, cumulativeMeanNormalizedDifference);
 
 
 
@@ -158,7 +158,7 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-        double threshold = 0.5;
+        double threshold = 0.45;
         int lag;
 
         for (  lag = 1; lag < bufferSize-1; lag++) {
@@ -175,7 +175,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves = 8;
+        int subOctaves = 3;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
