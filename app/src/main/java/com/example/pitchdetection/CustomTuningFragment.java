@@ -100,7 +100,7 @@ public class CustomTuningFragment extends Fragment {
                     String spinnerItem = spin.getItemAtPosition(i).toString();
                     String note = notes[spinIndex];
 
-                    System.out.println("Spinner Item: " + spinnerItem + ", Note: " + note);
+
 
                     if (spinnerItem.equalsIgnoreCase(note)) {
                         spin.setSelection(i);

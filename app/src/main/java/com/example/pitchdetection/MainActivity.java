@@ -108,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s5 = findViewById(R.id.s5);
         s6 = findViewById(R.id.s6);
 
-        selectedB=s1;
-        changeColor(s1);
         s1.setText("E2");
         s2.setText("A2");
         s3.setText("D3");
@@ -117,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         s5.setText("B3");
         s6.setText("e4");
 
+        selectedB = s1;
+        changeColor(s1);
+        pitchTextView = findViewById(R.id.freq);
+        updatePitchTextView(selectedB.getText().toString());
 
         for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
 
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             pitchDetector.start(this);
         }
 
-        pitchTextView = findViewById(R.id.freq);
+
         noteTextView = findViewById(R.id.note);
         pitchDetector = new PitchDetector();
         pitchDetector.setPitchDetectionListener(this);
@@ -207,6 +209,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             closeFragment(currentFragment);
         } else {
             openFragment(new TuningFragment(data), R.id.fragmentTuning);
+            setBackground();
+
         }
     }
 
@@ -263,12 +267,13 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
                 targetFrequency = Double.parseDouble(strings[1]);
+
                 cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
 
                 if (tuningText.equals("Automatic Tuning")) {
 
                     if (Math.abs(cents) <= 50) {
-                        pitchTextView.setText(String.format("%.2f", pitchFrequency) + " Hz");
+                        pitchTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
                         noteTextView.setText(strings[0]);
 
                         setPosition(cents);
@@ -278,11 +283,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                 } else {
 
                     if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 500)) {
-                        pitchTextView.setText("");
-                        targetFrequency = Double.parseDouble(strings[1]);
-                        cents = 1200 * Math.log(pitchFrequency / targetFrequency) / Math.log(2);
                         setPosition(cents);
-
                     }
 
                 }
@@ -335,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
         if (!tuningText.equals("Automatic Tuning")) {
-            changeColor(s1);
+            pitchTextView.setText("");
             s1.setText(notes[0]);
             s2.setText(notes[1]);
             s3.setText(notes[2]);
@@ -361,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         setBackground();
 
 
+
         if (tuningText != null) {
 
             for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
@@ -369,6 +371,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                     if (v.getId() == button.getId()) {
                         selectedB = button;
                         changeColor(button);
+                        updatePitchTextView(selectedB.getText().toString());
+
                     }
                 } else {
                     button.setOnClickListener(null);
@@ -380,6 +384,16 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         }
 
 
+    }
+
+    private void updatePitchTextView(String selectedNote) {
+        for (String[] strings : notesList) {
+            if (strings[0].equalsIgnoreCase(selectedNote)) {
+                double targetFrequency = Double.parseDouble(strings[1]);
+                pitchTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
+                return;
+            }
+        }
     }
 
     private void setBackground() {

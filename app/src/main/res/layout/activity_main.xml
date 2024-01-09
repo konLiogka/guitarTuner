@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="411dp"
+        android:layout_width="412dp"
         android:layout_height="169dp"
         android:layout_marginTop="68dp"
         android:fontFamily="@font/esp_bold"
