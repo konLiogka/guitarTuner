@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
     private List<String> data=new ArrayList<>();
     public static String[][] notesList = {
 
-
+            {"E1", "41.02"},
             {"B1", "61.74"},
             {"C2", "65.41"},
             {"C#2", "69.30"},
