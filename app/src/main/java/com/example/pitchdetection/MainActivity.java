@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
             noteTextView.setText(selectedB.getText().toString().replaceAll("\\d", ""));
         }
-        if (pitchFrequency > 50 && pitchFrequency < 4000) {
+        if (pitchFrequency > 40 && pitchFrequency < 4000) {
             double cents;
             double targetFrequency;
             for (String[] strings : notesList) {
