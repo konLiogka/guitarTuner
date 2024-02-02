@@ -42,21 +42,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/freq2"
+        android:layout_width="261dp"
+        android:layout_height="48dp"
+        android:fontFamily="@font/vt323"
+        android:gravity="center"
+
+        android:textColor="#A2FF86"
+        android:textSize="36dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note" />
+
+    <TextView
         android:id="@+id/note"
-        android:layout_width="412dp"
-        android:layout_height="169dp"
+        android:layout_width="411dp"
+        android:layout_height="150dp"
         android:layout_marginTop="68dp"
         android:fontFamily="@font/esp_bold"
         android:gravity="center"
         android:textColor="#A2FF86"
         android:textSize="130dp"
         app:haloColor="@null"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/freq" />
-
 
 
     <FrameLayout
@@ -69,7 +81,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tuningCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note">
+        app:layout_constraintTop_toBottomOf="@+id/freq2">
 
     </FrameLayout>
 
@@ -135,8 +147,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="233dp"
-        android:layout_height="439dp"
+        android:layout_width="225dp"
+        android:layout_height="383dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +158,7 @@
         android:id="@+id/s4"
         android:layout_width="82dp"
         android:layout_height="68dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="#404040"
         android:fontFamily="@font/vt323"
         android:textColor="@color/black"
@@ -154,7 +166,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/note" />
+        app:layout_constraintTop_toBottomOf="@+id/freq2" />
 
     <Button
         android:id="@+id/s5"
@@ -174,7 +186,7 @@
         android:id="@+id/s3"
         android:layout_width="82dp"
         android:layout_height="68dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="#404040"
         android:fontFamily="@font/vt323"
         android:textColor="@color/black"
@@ -182,7 +194,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note" />
+        app:layout_constraintTop_toBottomOf="@+id/freq2" />
 
     <Button
         android:id="@+id/s2"

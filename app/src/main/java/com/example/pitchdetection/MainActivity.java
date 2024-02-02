@@ -37,19 +37,20 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements PitchDetector.PitchDetectionListener, View.OnClickListener {
+
+    private static final double MIN_PITCH_FREQUENCY = 40;
+    private static final double MAX_PITCH_FREQUENCY = 4000;
+    private static final int MAX_NOTE_CENTS = 500;
+
     public TextView pitchTextView;
     public TextView noteTextView;
+    public TextView noteFreqTextView;
     private PitchDetector pitchDetector;
-
-
     private Button s1, s2, s3, s4, s5, s6;
-
     private String tuningText = "Standard E (E2 A2 D3 G3 B3 e4)";
-
     private Button selectedB;
     private Fragment currentFragment = null;
-
-    private List<String> data=new ArrayList<>();
+    private List<String> data;
     public static String[][] notesList = {
 
             {"E1", "41.02"},
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         selectedB = s1;
         changeColor(s1);
         pitchTextView = findViewById(R.id.freq);
+        noteFreqTextView = findViewById(R.id.freq2);
         updatePitchTextView(selectedB.getText().toString());
 
         for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
@@ -126,21 +128,23 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         }
 
 
-
+        pitchDetector = new PitchDetector();
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
         } else {
 
-            pitchDetector = new PitchDetector();
+
             pitchDetector.start(this);
         }
 
 
         noteTextView = findViewById(R.id.note);
-        pitchDetector = new PitchDetector();
+
+
         pitchDetector.setPitchDetectionListener(this);
+        
 
         data = getList(this);
         if(data.isEmpty()){
@@ -260,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
             noteTextView.setText(selectedB.getText().toString().replaceAll("\\d", ""));
         }
-        if (pitchFrequency > 40 && pitchFrequency < 4000) {
+        if (pitchFrequency > MIN_PITCH_FREQUENCY && pitchFrequency < MAX_PITCH_FREQUENCY) {
             double cents;
             double targetFrequency;
             for (String[] strings : notesList) {
@@ -273,7 +277,8 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
                 if (tuningText.equals("Automatic Tuning")) {
 
                     if (Math.abs(cents) <= 50) {
-                        pitchTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
+                        pitchTextView.setText(String.format("%.2f", pitchFrequency) + " Hz");
+                        noteFreqTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
                         noteTextView.setText(strings[0]);
 
                         setPosition(cents);
@@ -282,8 +287,9 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
                 } else {
 
-                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= 500)) {
+                    if (strings[0].equalsIgnoreCase(selectedB.getText().toString()) && (Math.abs(cents) <= MAX_NOTE_CENTS)) {
                         setPosition(cents);
+
                     }
 
                 }
@@ -336,14 +342,16 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
 
         if (!tuningText.equals("Automatic Tuning")) {
-            pitchTextView.setText("");
+
             s1.setText(notes[0]);
             s2.setText(notes[1]);
             s3.setText(notes[2]);
             s4.setText(notes[3]);
             s5.setText(notes[4]);
             s6.setText(notes[5]);
-
+            selectedB = s1;
+            changeColor(s1);
+            updatePitchTextView(selectedB.getText().toString());
 
             for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
 
@@ -390,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         for (String[] strings : notesList) {
             if (strings[0].equalsIgnoreCase(selectedNote)) {
                 double targetFrequency = Double.parseDouble(strings[1]);
-                pitchTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
+                noteFreqTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
                 return;
             }
         }
