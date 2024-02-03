@@ -102,12 +102,18 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
             getSupportActionBar().hide();
         }
 
+        pitchTextView = findViewById(R.id.freq);
+        noteFreqTextView = findViewById(R.id.freq2);
+
+
         s1 = findViewById(R.id.s1);
         s2 = findViewById(R.id.s2);
         s3 = findViewById(R.id.s3);
         s4 = findViewById(R.id.s4);
         s5 = findViewById(R.id.s5);
         s6 = findViewById(R.id.s6);
+
+
 
         s1.setText("E2");
         s2.setText("A2");
@@ -118,8 +124,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
 
         selectedB = s1;
         changeColor(s1);
-        pitchTextView = findViewById(R.id.freq);
-        noteFreqTextView = findViewById(R.id.freq2);
+
         updatePitchTextView(selectedB.getText().toString());
 
         for (Button button : Arrays.asList(s1, s2, s3, s4, s5, s6)) {
@@ -323,7 +328,17 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         float targetX = centerX + (float) offset;
 
 
+        if (!tuningText.equals("Automatic Tuning")) {
+            float threshold = 0.2f * centerX; // 5% of centerX
 
+            if (targetX > centerX + threshold) {
+                pitchTextView.setText("Tune DOWN!");
+            } else if (targetX < centerX - threshold) {
+                pitchTextView.setText("Tune UP!");
+            } else {
+                pitchTextView.setText("OK");
+            }
+        }
         pointer.setTranslationX(targetX);
 
 
@@ -398,6 +413,7 @@ public class MainActivity extends AppCompatActivity implements PitchDetector.Pit
         for (String[] strings : notesList) {
             if (strings[0].equalsIgnoreCase(selectedNote)) {
                 double targetFrequency = Double.parseDouble(strings[1]);
+
                 noteFreqTextView.setText(String.format("%.2f", targetFrequency) + " Hz");
                 return;
             }

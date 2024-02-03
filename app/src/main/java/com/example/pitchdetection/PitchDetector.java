@@ -17,7 +17,7 @@ import androidx.core.app.ActivityCompat;
 
 public class PitchDetector {
     private static final int SAMPLE_RATE = 44100;
-    private static final int BUFFER_SIZE = 1024 *4;
+    private static final int BUFFER_SIZE = 1024 *8;
     public short[] buffer = new short[BUFFER_SIZE];
     private AudioRecord audioRecord;
     private boolean isRecording = false;
@@ -158,7 +158,7 @@ public class PitchDetector {
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
 
-        double threshold = 0.45;
+        double threshold = 0.13;
         int lag;
 
         for (  lag = 1; lag < bufferSize-1; lag++) {
@@ -175,7 +175,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves = 3;
+        int subOctaves = 6;
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
