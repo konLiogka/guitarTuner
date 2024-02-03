@@ -2,21 +2,14 @@ package com.example.pitchdetection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+// Basic implementation for getting a list of data from shared preferences
 public class TuningsList {
-
     private static final String LIST_KEY = "tuningList_key";
-
-
     public static void saveList(Context context, List<String> list) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -29,7 +22,6 @@ public class TuningsList {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String jsonArrayString = sharedPreferences.getString(LIST_KEY, null);
         List<String> list = new ArrayList<>();
-
         if (jsonArrayString != null) {
             try {
                 JSONArray jsonArray = new JSONArray(jsonArrayString);
@@ -40,16 +32,17 @@ public class TuningsList {
                 e.printStackTrace();
             }
         }
-
         return list;
     }
 
+    // Adding item to list
     public static void addToList( String newString,Context context) {
         List<String> data = getList(context);
         data.add(newString);
         saveList(context, data);
     }
 
+    // Fill the list if it doesnt exist
     public static List<String> fillList(Context context){
         List<String> data = getList(context);
         data.add("Automatic Tuning");
@@ -67,12 +60,14 @@ public class TuningsList {
         return data;
     }
 
+    // Editing existing item.
     public static List<String>  replaceToList( String newString, Context context, int position) {
         List<String> data = getList(context);
         data.set(position+11, newString);
         saveList(context, data);
         return data;
     }
+    // Removing existing item from list.
     public static List<String> removeFromList(Context context, int position){
         List<String> data = getList(context);
         data.remove(position +11);

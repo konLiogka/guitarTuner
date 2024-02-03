@@ -1,20 +1,15 @@
 package com.example.pitchdetection;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
+//Editing a tuning.
 public class EditTuningRecyclerAdapter extends RecyclerView.Adapter<EditTuningRecyclerAdapter.ViewHolder> {
     static private List<String> items;
     private static MainActivity activity;
