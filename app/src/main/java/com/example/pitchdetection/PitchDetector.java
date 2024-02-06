@@ -45,9 +45,11 @@ public class PitchDetector {
         handler = new Handler(Looper.getMainLooper());
         handler.post(updatePitch);
     }
-
+    // Stopping the detector
     public void stop() {
+        // Check if recording, if not return.
         if (!isRecording) return;
+        // Stop recording
         audioRecord.stop();
         audioRecord.release();
         isRecording = false;
@@ -56,7 +58,7 @@ public class PitchDetector {
             handler = null;
         }
     }
-
+    // Continuously computing the pitch frequency
     private final Runnable updatePitch = new Runnable() {
         @Override
         public void run() {
@@ -126,7 +128,7 @@ public class PitchDetector {
     }
 
     private int AbsoluteThreshold(double[] cumulativeMeanNormalizedDifference, int bufferSize){
-        double threshold = 0.1;
+        double threshold = 0.3; // Adjust accordingly
         int lag;
         for (  lag = 1; lag < bufferSize-1; lag++) {
             if(cumulativeMeanNormalizedDifference[lag-1]< threshold){
@@ -142,7 +144,7 @@ public class PitchDetector {
     }
 
     private int OctaveThreshold(int bufferSize, int lag, double[] cumulativeMeanNormalizedDifference){
-        int subOctaves = 8;
+        int subOctaves = 4;  // Adjust accordingly
         int subOctaveSize = bufferSize / subOctaves;
         int subOctaveStart = (lag / subOctaveSize) * subOctaveSize;
         int subOctaveEnd = subOctaveStart + subOctaveSize;
