@@ -3,13 +3,12 @@
 This is a guitar tuner app. Download the application from [here](https://github.com/konLiogka/guitarTuner/blob/main/app-debug.apk).
 It utilizes the YIN algorithm for pitch detection, made thanks to this [paper](http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf). [Here's](https://www.youtube.com/watch?v=pbleU_p67YU&t=7s) a video showing how it works.  
 > [!NOTE]
-> This app may not work properly(lag) on older phones!! While the app is finished, there are still some things that I need to change and there may be some small bugs.  
+> May lag on older phones, works very well on my samsung S10 though. Susceptible to noise! Be careful when tuning, let the note to ring.
  
 
 
 # Description
-This is my first serious programming project. I chose this type of application because its not something common while I was also looking to replace my tuner apps with something free, open source and easy to use. This app was made for guitars, however I found out that it can work on pianos too. Still, it's tuned specifically for guitars so I wouldn't recommend using it on any other instruments. I have also added the option
-of creating a custom tuning.
+This is my first serious programming project. I chose this type of application because its not a common concept, not something that can be easily found as a free and open source app. This app was made for guitars but I guess it can be used on any instrument. There are pre-added tunings as well as the ability to add custom ones! 
 
 
 # How it works
@@ -27,21 +26,20 @@ The pitch detection algorithm, while not completely handmade, does not use any e
   This can be done using parabolic interpolation which fits a parabola, resulting in a smoother pitch. It is a very commonly used function in pitch detection algorithms
   for discrete/digital signals as it fits a parabola between 3 points, essentially creating a curve.
 
-The program has multiple tunings pre-included as well as automatic tuning. Manual tuning is way more accurate than automatic.
+The program has multiple tunings pre-included as well as automatic tuning. Manual tuning is way more accurate than automatic as it checks for a pitch within a certain range from the target note.
 
 > [!IMPORTANT]
 > There is a notable octave jumping in automatic tuning.
 > This is not a problem with manual tuning because I have set a specific value of cents that the note can range based on the selected string.
 
- ( old images )
+
 ## Manual Tuning
 
- ![standard](https://github.com/konLiogka/guitarTuner/assets/78957746/5513d7a5-05aa-44d5-a252-7ee9bd64b0cd)
+![img1](https://github.com/konLiogka/guitarTuner/assets/78957746/41b8a728-16ff-4315-b908-2f7c4f4a76a1)
 
 
 ## Automatic Tuning
  
-![auto](https://github.com/konLiogka/guitarTuner/assets/78957746/e9e8a400-777c-43aa-9ba4-7a9251356732)  
+![img2](https://github.com/konLiogka/guitarTuner/assets/78957746/f959701e-55dc-48fd-a03e-f2bad2316d82)
 
 
-Known bugs: απορροφητήρες 
