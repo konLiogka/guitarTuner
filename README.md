@@ -35,11 +35,14 @@ The program has multiple tunings pre-included as well as automatic tuning. Manua
 
 ## Manual Tuning
 
-![img1](https://github.com/konLiogka/guitarTuner/assets/78957746/41b8a728-16ff-4315-b908-2f7c4f4a76a1)
+
+![img1](https://github.com/konLiogka/guitarTuner/assets/78957746/77bec4e6-e7f8-4441-8b01-c9a5938dc8d5)
+
 
 
 ## Automatic Tuning
  
-![img2](https://github.com/konLiogka/guitarTuner/assets/78957746/f959701e-55dc-48fd-a03e-f2bad2316d82)
+![img2](https://github.com/konLiogka/guitarTuner/assets/78957746/a336d55c-3271-4e09-9744-7acbd21dbce7)
+
 
 
